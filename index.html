@@ -87,6 +87,7 @@ th.d{min-width:30px;padding:4px 0}th.d.t{color:var(--acc);font-weight:800}
 .cell.on{background:var(--ok);border-color:var(--ok)}.cell.t{border-color:var(--gold)}.cell:disabled{opacity:.3;cursor:default}
 .item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border:0}.item .m{flex:1;min-width:0}
+.libtools{display:grid;grid-template-columns:1fr 190px;gap:10px;margin:12px 0}.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}.libcard{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;flex-direction:column;gap:7px}.libcard .sm{min-height:34px}.libcard .btn{align-self:flex-start;margin-top:auto}.libtag{font-size:11px;color:var(--acc);font-weight:800;text-transform:uppercase;letter-spacing:.04em}@media(max-width:600px){.libtools{grid-template-columns:1fr}.libgrid{grid-template-columns:1fr}}
 .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:22px;flex:none}
 .ed{border:0;background:var(--bg);color:var(--mute);border-radius:10px;width:34px;height:34px}.ed:hover{color:var(--acc)}
 .radar{width:100%;max-width:380px;margin:0 auto;display:block}
@@ -155,7 +156,8 @@ dialog label{display:block;font-size:14px;color:var(--mute);margin-bottom:12px}
   </div></div>
 
   <div class="page" id="p-tasks">
-    <section class="card"><div class="row"><h2>Мои задания</h2><button class="btn go" id="addT">＋ Новое задание</button></div><div id="tlist"></div></section>
+    <section class="card"><div class="row"><h2>Мои задания</h2><div class="row"><button class="btn" id="openLib">▦ Библиотека заданий</button><button class="btn go" id="addT">＋ Новое задание</button></div></div><div id="tlist"></div></section>
+    <section class="card" id="taskLibrary" hidden><div class="row"><div><h2 style="margin-bottom:2px">Библиотека привычек</h2><div class="sm">Выберите готовую идею — её можно будет изменить в любое время.</div></div><button class="btn" id="closeLib">Свернуть</button></div><div class="libtools"><input id="libSearch" type="search" placeholder="Поиск по заданиям…" aria-label="Поиск по заданиям"><select id="libCategory" aria-label="Категория"><option value="Все">Все категории</option></select></div><div class="libgrid" id="libGrid"></div></section>
     <section class="card"><h2 id="gTitle" style="text-transform:capitalize"></h2><div class="scroll"><table id="grid"></table></div></section>
   </div>
 
@@ -265,6 +267,18 @@ function calc(){
   return {xp,coins:Math.round(coins)-spent,tot,perfect,wk,best,sk,dayXp,topSk,lv,lo:gl(lv),hi:gl(lv+1)};
 }
 const A=[["👣","Первый шаг","Первая отметка",c=>[c.tot,1]],["🔥","Разгон","Серия 3 дня",c=>[c.best,3]],["⚡","Неделя силы","Серия 7 дней",c=>[c.best,7]],["🏔️","Закалка","Серия 21 день",c=>[c.best,21]],["🌟","Идеальный день","Все задания за день",c=>[c.perfect,1]],["💎","Пять идеальных","5 идеальных дней",c=>[c.perfect,5]],["🎯","Цель недели","Выполнить недельную цель",c=>[c.wk,1]],["💯","Сотня","100 отметок",c=>[c.tot,100]],["🧙","Мастер навыка","Довести навык до 3 уровня",c=>[c.topSk,3]],["🛍️","Заслуженный отдых","Купить первую награду",c=>[state.spent.length,1]],["🚀","Пятый уровень","Достичь уровня 5",c=>[c.lv,5]],["🏁","Полсотни","50 отметок",c=>[c.tot,50]],["💫","Полтысячи","500 отметок",c=>[c.tot,500]],["🌠","Месяц силы","Серия 30 дней",c=>[c.best,30]],["🌋","Несгибаемый","Серия 50 дней",c=>[c.best,50]],["✨","Десять идеальных","10 идеальных дней",c=>[c.perfect,10]],["🎖️","Пять целей недели","Выполнить недельные цели 5 раз",c=>[c.wk,5]],["🧠","Мудрец","Довести навык до 5 уровня",c=>[c.topSk,5]],["🌈","Разносторонний","Прокачать 3 разных навыка",c=>[Object.values(c.sk).filter(k=>k.n>0).length,3]],["🎨","Универсал","Прокачать все навыки",c=>[Object.values(c.sk).filter(k=>k.n>0).length,Math.max(1,state.skills.length)]],["🏅","Тысяча опыта","Набрать 1000 XP",c=>[c.xp,1000]],["👑","Королевский опыт","Набрать 5000 XP",c=>[c.xp,5000]],["🏆","Десятый уровень","Достичь уровня 10",c=>[c.lv,10]],["😊","Чувство дня","Отметить настроение 7 дней",c=>[Object.keys(state.mood).length,7]],["🛌","Умение отдыхать","Взять первый выходной",c=>[Object.keys(state.rest).length,1]],["💰","Копилка","Накопить 200 монет",c=>[c.coins,200]],["🛒","Любитель наград","Купить 5 наград",c=>[state.spent.length,5]],["🛠️","Строитель","Создать 8 заданий",c=>[state.tasks.length,8]]];
+
+const TASK_LIBRARY=[
+{n:"Прогулка на свежем воздухе",c:"Здоровье",i:"🚶",d:"Пройтись 20–30 минут без спешки.",t:7,x:1},{n:"Стакан воды после пробуждения",c:"Здоровье",i:"💧",d:"Начать утро со стакана воды.",t:7,x:1},{n:"Лечь спать вовремя",c:"Здоровье",i:"🌙",d:"Подготовиться ко сну и лечь в выбранное время.",t:7,x:2},{n:"Сделать короткую разминку",c:"Здоровье",i:"🤸",d:"5–10 минут мягкой разминки.",t:7,x:1},{n:"Добавить овощи к приёму пищи",c:"Здоровье",i:"🥗",d:"Сделать один приём пищи более сбалансированным.",t:7,x:1},{n:"Провести 10 минут на улице",c:"Здоровье",i:"🌳",d:"Небольшая прогулка или время на свежем воздухе.",t:7,x:1},
+{n:"Тренировка или активность",c:"Спорт",i:"🏋️",d:"Выбрать подходящую нагрузку на 20–40 минут.",t:3,x:2},{n:"Растяжка после пробуждения",c:"Спорт",i:"🧘",d:"Несколько упражнений на подвижность.",t:7,x:1},{n:"Пройти 8 000 шагов",c:"Спорт",i:"👟",d:"Адаптируйте цель под свой обычный уровень активности.",t:7,x:2},{n:"Сделать силовой комплекс",c:"Спорт",i:"💪",d:"Короткий комплекс с собственным весом.",t:3,x:2},{n:"Подняться по лестнице",c:"Спорт",i:"🪜",d:"Выбрать лестницу вместо лифта, когда это удобно.",t:5,x:1},
+{n:"Прочитать 10 страниц",c:"Развитие",i:"📖",d:"Книга, учебник или полезный материал.",t:7,x:1},{n:"Изучать иностранный язык",c:"Развитие",i:"🌍",d:"10–15 минут практики слов или аудирования.",t:5,x:2},{n:"Послушать образовательный подкаст",c:"Развитие",i:"🎧",d:"Узнать одну новую полезную вещь.",t:3,x:1},{n:"Записать одну новую идею",c:"Развитие",i:"💡",d:"Фиксировать мысли, которые хочется развить.",t:7,x:1},{n:"Пройти урок или занятие",c:"Развитие",i:"🎓",d:"Продвинуться на один небольшой шаг в обучении.",t:3,x:2},{n:"Практиковать новое умение",c:"Развитие",i:"🛠️",d:"Выделить 15 минут на практику.",t:3,x:2},
+{n:"Записать все расходы за день",c:"Финансы",i:"🧾",d:"Внести покупки и платежи в учёт.",t:7,x:1},{n:"Проверить бюджет недели",c:"Финансы",i:"📊",d:"Сверить расходы с планом.",t:1,x:2},{n:"Отложить небольшую сумму",c:"Финансы",i:"🐷",d:"Перевести заранее выбранную сумму в накопления.",t:5,x:2},{n:"24 часа без импульсивных покупок",c:"Финансы",i:"🛑",d:"Перед необязательной покупкой сделать паузу.",t:7,x:2},{n:"Разобрать одну финансовую цель",c:"Финансы",i:"🎯",d:"Уточнить сумму, срок или следующий шаг.",t:1,x:2},
+{n:"Позвонить близкому человеку",c:"Отношения",i:"📞",d:"Связаться и по-настоящему поговорить.",t:2,x:1},{n:"Провести время без телефона с близкими",c:"Отношения",i:"❤️",d:"Выделить хотя бы 20 минут полного внимания.",t:3,x:2},{n:"Сказать кому-то спасибо",c:"Отношения",i:"🙏",d:"Выразить благодарность конкретному человеку.",t:3,x:1},{n:"Запланировать совместное занятие",c:"Отношения",i:"🗓️",d:"Найти время для приятного общего дела.",t:1,x:1},
+{n:"Убрать рабочее место",c:"Порядок",i:"🧹",d:"5–10 минут на порядок вокруг себя.",t:5,x:1},{n:"Разобрать одну небольшую зону",c:"Порядок",i:"🗂️",d:"Полка, ящик или часть шкафа — не всё сразу.",t:3,x:2},{n:"Подготовить вещи на завтра",c:"Порядок",i:"🎒",d:"Снизить утреннюю суету заранее.",t:5,x:1},{n:"Выполнить главное дело дня",c:"Порядок",i:"⭐",d:"Сначала продвинуть важную задачу.",t:5,x:2},{n:"Составить план на завтра",c:"Порядок",i:"📝",d:"Выбрать 1–3 приоритета на следующий день.",t:7,x:1},
+{n:"10 минут без экрана",c:"Цифровой баланс",i:"📵",d:"Отдохнуть от уведомлений и ленты.",t:7,x:1},{n:"Не брать телефон первые 15 минут утра",c:"Цифровой баланс",i:"☀️",d:"Начать день без скроллинга.",t:5,x:2},{n:"Отключить лишние уведомления",c:"Цифровой баланс",i:"🔕",d:"Убрать отвлекающие уведомления приложений.",t:1,x:1},{n:"Вечер без социальных сетей",c:"Цифровой баланс",i:"🌿",d:"Выделить вечернее время без бесконечной ленты.",t:2,x:2},
+{n:"Выделить время на любимое хобби",c:"Отдых",i:"🎨",d:"Заняться тем, что приносит удовольствие.",t:3,x:1},{n:"Сделать короткую дыхательную паузу",c:"Отдых",i:"🌬️",d:"Несколько минут спокойного дыхания.",t:7,x:1},{n:"Записать три хорошие вещи за день",c:"Отдых",i:"✨",d:"Замечать небольшие приятные события.",t:7,x:1},{n:"Провести час на природе",c:"Отдых",i:"🏞️",d:"Прогулка, парк или спокойное время на улице.",t:1,x:2},{n:"Запланировать полноценный отдых",c:"Отдых",i:"🛌",d:"Заранее оставить время без обязательств.",t:1,x:1}
+];
+
 // effects
 let tt;
 function toast(m,ic){const t=$("toast");t.innerHTML=(ic?'<span class="ti">'+ic+'</span>':"")+"<span>"+esc(m)+"</span>";t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),3800)}
@@ -332,6 +346,21 @@ function buy(id,btn){
   const [x,y]=ctr(btn);state.spent.push({n:r.name,cost:r.cost,d:T});persist();render();boom(x,y,30);toast("Куплено: "+r.name+". Наслаждайтесь!","🎁");
 }
 // render
+
+function renderLibrary(){
+  const cat=$("libCategory").value||"Все",q=($("libSearch").value||"").trim().toLocaleLowerCase("ru-RU");
+  const list=TASK_LIBRARY.filter(x=>(cat==="Все"||x.c===cat)&&(!q||(x.n+" "+x.d+" "+x.c).toLocaleLowerCase("ru-RU").includes(q)));
+  $("libGrid").innerHTML=list.map(x=>{const idx=TASK_LIBRARY.indexOf(x),exists=state.tasks.some(t=>t.libraryName===x.n);return `<article class="libcard"><div class="libtag">${x.i} ${esc(x.c)}</div><b>${esc(x.n)}</b><div class="sm">${esc(x.d)}</div><div class="sm">${x.t===7?"Каждый день":x.t+" раз(а) в неделю"} · ${x.x===1?"Лёгкая · 10 XP":"Средняя · 20 XP"}</div><button class="btn ${exists?"":"go"}" data-addlib="${idx}" ${exists?"disabled":""}>${exists?"Уже добавлено":"＋ Добавить"}</button></article>`}).join("")||'<div class="empty">Ничего не найдено. Попробуйте изменить поиск или категорию.</div>';
+}
+function addLibraryTask(idx){
+  const x=TASK_LIBRARY[idx];if(!x)return;
+  if(state.tasks.some(t=>t.libraryName===x.n)){toast("Это задание уже есть в вашем списке");return}
+  const map={"Здоровье":["Здоровье","s1"],"Спорт":["Здоровье","s1"],"Развитие":["Развитие","s4"],"Финансы":["Финансы","s3"],"Отношения":["Близкие","s5"],"Порядок":["Работа","s2"],"Цифровой баланс":["Развитие","s4"],"Отдых":["Здоровье","s1"]};
+  const target=map[x.c]||[];const sk=state.skills.find(s=>s.n===target[0])||state.skills.find(s=>s.id===target[1])||state.skills[0];
+  state.tasks.push({id:"t"+Date.now()+Math.random().toString(36).slice(2,6),name:x.n,skill:sk?sk.id:"",t:x.t,d:x.x,m:"w",wd:[],on:"",libraryName:x.n});
+  persist();render();renderLibrary();toast("Добавлено: "+x.n,"✓");
+}
+
 function render(){
   renderQuote();
   const C=last=calc(),ti=Math.min(C.lv-1,6);
@@ -403,9 +432,10 @@ document.addEventListener("click",e=>{
   else if(d.date){sel=d.date;render()}
   else if(d.m){view=new Date(view.getFullYear(),view.getMonth()+ +d.m,1);render()}
   else if(d.mood){const v=+d.mood;if(state.mood[sel]===v)delete state.mood[sel];else state.mood[sel]=v;save()}
-  else if(d.et)editTask(d.et);else if(d.es)editSkill(d.es);else if(d.er)editReward(d.er);
+  else if(d.addlib)addLibraryTask(+d.addlib);else if(d.et)editTask(d.et);else if(d.es)editSkill(d.es);else if(d.er)editReward(d.er);
   else if(d.buy)buy(d.buy,b);
 });
+$("openLib").onclick=()=>{$("taskLibrary").hidden=false;renderLibrary();$("taskLibrary").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})};$("closeLib").onclick=()=>{$("taskLibrary").hidden=true};$("libSearch").oninput=renderLibrary;$("libCategory").innerHTML='<option value="Все">Все категории</option>'+[...new Set(TASK_LIBRARY.map(x=>x.c))].map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");$("libCategory").onchange=renderLibrary;
 $("restB").onclick=()=>{if(state.rest[sel])delete state.rest[sel];else state.rest[sel]=1;save()};
 $("addT").onclick=()=>editTask();$("addS").onclick=()=>editSkill();$("addR").onclick=()=>editReward();
 $("goal").value=state.goal||"";$("goal").oninput=function(){state.goal=this.value;persist()};
