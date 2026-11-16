@@ -106,6 +106,9 @@ th.d{min-width:30px;padding:4px 0}th.d.t{color:var(--acc);font-weight:800}
 #toast.show{opacity:1}
 #toast{display:flex;align-items:center;justify-content:center;gap:12px}
 .ti{font-size:36px;line-height:1;animation:pop .6s}
+.wdg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.wdg label{margin:0!important;display:inline-flex!important;align-items:center;gap:5px;background:var(--bg);border-radius:99px;padding:5px 12px;font-size:14px;color:var(--ink)!important;cursor:pointer}
+.wdg input{width:auto;accent-color:var(--acc)}
 dialog{border:0;border-radius:22px;padding:22px;background:var(--card);color:var(--ink);box-shadow:var(--sh);width:min(420px,92vw)}
 dialog::backdrop{background:rgba(20,10,50,.55)}
 dialog label{display:block;font-size:14px;color:var(--mute);margin-bottom:12px}
@@ -181,19 +184,26 @@ const now=new Date();now.setHours(0,0,0,0);
 const T=kd(now);let sel=T,view=new Date(now.getFullYear(),now.getMonth(),1),page="home",last=null;
 const isDone=(k,id)=>(state.done[k]||[]).includes(id),xpOf=t=>XPV[t.d||2],skillOf=t=>state.skills.find(s=>s.id===t.skill);
 const gl=L=>75*L*(L-1),sl=L=>40*L*(L-1),lvOf=(x,f)=>{let L=1;while(f(L+1)<=x)L++;return L};
+const WD=["пн","вт","ср","чт","пт","сб","вс"];
+const wdi=k=>(parse(k).getDay()+6)%7;
+const onDay=(t,k)=>t.m==="o"?t.on===k:t.m==="d"?(t.wd||[]).includes(wdi(k)):true;
+const req=(t,k)=>t.m==="o"?t.on===k:t.m==="d"?(t.wd||[]).includes(wdi(k)):t.t===7;
+const hasStreak=t=>t.m==="d"||((!t.m||t.m==="w")&&t.t===7);
+const need=t=>t.m==="o"?0:t.m==="d"?(t.wd||[]).length:t.t;
+const sched=t=>t.m==="o"?"разово, "+parse(t.on).toLocaleDateString("ru-RU",{day:"numeric",month:"long"}):t.m==="d"?"по "+(t.wd||[]).slice().sort().map(i=>WD[i]).join(", "):TOPT.find(o=>o[0]===t.t)[1].toLowerCase();
 function weekCount(id,date){const s=wkStart(date);let n=0;for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);if(isDone(kd(d),id))n++}return n}
-function streak(id){const d=new Date(now);let s=0,g=0;if(!isDone(T,id))d.setDate(d.getDate()-1);while(g++<2000){const k=kd(d);if(isDone(k,id))s++;else if(!state.rest[k])break;d.setDate(d.getDate()-1)}return s}
+function streak(id){const t=state.tasks.find(x=>x.id===id),d=new Date(now);let s=0,g=0;while(g++<2000){const k=kd(d);if(isDone(k,id))s++;else if(k!==T&&req(t,k)&&!state.rest[k])break;d.setDate(d.getDate()-1)}return s}
 function calc(){
   const tk={},sk={},wks={},dayXp={};let xp=0,coins=0,tot=0,perfect=0,wk=0,best=0;
-  state.tasks.forEach(t=>{tk[t.id]=t;if(t.t===7)best=Math.max(best,streak(t.id))});
+  state.tasks.forEach(t=>{tk[t.id]=t;if(hasStreak(t))best=Math.max(best,streak(t.id))});
   state.skills.forEach(s=>sk[s.id]={xp:0,n:0});
   for(const k in state.done){
     const a=state.done[k].filter(i=>tk[i]);let dx=0;
-    a.forEach(i=>{const t=tk[i],x=xpOf(t);dx+=x;coins+=x/2;tot++;if(sk[t.skill]){sk[t.skill].xp+=x;sk[t.skill].n++}const q=i+"|"+kd(wkStart(parse(k)));wks[q]=(wks[q]||0)+1});
-    if(state.tasks.length>=2&&a.length===state.tasks.length){perfect++;dx+=25;coins+=10}
+    a.forEach(i=>{const t=tk[i],x=xpOf(t);dx+=x;coins+=x/2;tot++;if(sk[t.skill]){sk[t.skill].xp+=x;sk[t.skill].n++}if(t.m!=="o"){const q=i+"|"+kd(wkStart(parse(k)));wks[q]=(wks[q]||0)+1}});
+    const rq=state.tasks.filter(t=>req(t,k));if(rq.length>=2&&rq.every(t=>a.includes(t.id))){perfect++;dx+=25;coins+=10}
     dayXp[k]=dx;xp+=dx;
   }
-  for(const q in wks){if(wks[q]>=tk[q.split("|")[0]].t){wk++;xp+=30;coins+=15}}
+  for(const q in wks){if(wks[q]>=(need(tk[q.split("|")[0]])||99)){wk++;xp+=30;coins+=15}}
   let topSk=1;for(const id in sk){const o=sk[id];o.lv=lvOf(o.xp,sl);o.lo=sl(o.lv);o.hi=sl(o.lv+1);topSk=Math.max(topSk,o.lv)}
   const lv=lvOf(xp,gl),spent=state.spent.reduce((a,b)=>a+b.cost,0);
   return {xp,coins:Math.round(coins)-spent,tot,perfect,wk,best,sk,dayXp,topSk,lv,lo:gl(lv),hi:gl(lv+1)};
@@ -221,17 +231,32 @@ function toggle(date,id,btn){
 }
 function form(title,fields,onSave,onDel){
   const dlg=$("dlg");let h="<h2>"+title+"</h2>";
-  fields.forEach(f=>{h+="<label>"+f.l;if(f.o)h+=`<select data-f="${f.k}">`+f.o.map(o=>`<option value="${o[0]}"${String(o[0])===String(f.v)?" selected":""}>${esc(o[1])}</option>`).join("")+"</select>";else h+=`<input data-f="${f.k}" type="${f.t||"text"}" value="${esc(f.v==null?"":f.v)}" maxlength="${f.m||60}">`;h+="</label>"});
-  h+='<div class="dact"><button class="btn go" id="fS">Сохранить</button><button class="btn" id="fC">Отмена</button>'+(onDel?'<button class="btn del" id="fD">Удалить</button>':"")+"</div>";
-  dlg.innerHTML=h;dlg.showModal();
+  fields.forEach(f=>{const g=f.g?` data-g="${f.g}"`:"";
+    if(f.cb){h+=`<div class="wdg"${g}><span class="sm" style="width:100%">${f.l}</span>`+WD.map((n,i)=>`<label><input type="checkbox" data-wd value="${i}"${(f.v||[]).includes(i)?" checked":""}>${n}</label>`).join("")+"</div>";return}
+    h+=`<label${g}>`+f.l;
+    if(f.o)h+=`<select data-f="${f.k}">`+f.o.map(o=>`<option value="${o[0]}"${String(o[0])===String(f.v)?" selected":""}>${esc(o[1])}</option>`).join("")+"</select>";
+    else h+=`<input data-f="${f.k}" type="${f.t||"text"}" value="${esc(f.v==null?"":f.v)}" maxlength="${f.m||60}">`;
+    h+="</label>"});
+  h+='<div class="sm" id="fE" style="color:var(--warn);margin-bottom:8px"></div><div class="dact"><button class="btn go" id="fS">Сохранить</button><button class="btn" id="fC">Отмена</button>'+(onDel?'<button class="btn del" id="fD">Удалить</button>':"")+"</div>";
+  dlg.innerHTML=h;dlg.showModal();const mm=dlg.querySelector("[data-f=m]"),upd=()=>dlg.querySelectorAll("[data-g]").forEach(e=>e.style.display=!mm||e.dataset.g===mm.value?"":"none");if(mm)mm.onchange=upd;upd();
   $("fC").onclick=()=>dlg.close();
-  $("fS").onclick=()=>{const o={};dlg.querySelectorAll("[data-f]").forEach(e=>o[e.dataset.f]=e.value);if(!String(o[fields[0].k]).trim())return;onSave(o);dlg.close();save()};
+  $("fS").onclick=()=>{const o={};dlg.querySelectorAll("[data-f]").forEach(e=>o[e.dataset.f]=e.value);o.wd=[...dlg.querySelectorAll("[data-wd]:checked")].map(e=>+e.value);if(!String(o[fields[0].k]).trim())return;const er=onSave(o);if(er){$("fE").textContent=er;return}dlg.close();save()};
   if(onDel)$("fD").onclick=()=>{if(confirm("Удалить? Это действие нельзя отменить.")){onDel();dlg.close();save()}};
 }
 function editTask(id){
-  const t=id?state.tasks.find(x=>x.id===id):{name:"",skill:state.skills[0]?state.skills[0].id:"",t:7,d:2};
-  form(id?"Изменить задание":"Новое задание",[{k:"name",l:"Название",v:t.name,m:50},{k:"skill",l:"Навык, который оно прокачивает",o:[["","Без навыка"]].concat(state.skills.map(s=>[s.id,s.i+" "+s.n])),v:t.skill},{k:"d",l:"Сложность",o:DIFF,v:t.d||2},{k:"t",l:"Как часто",o:TOPT,v:t.t}],
-    o=>{const r={name:o.name.trim(),skill:o.skill,d:+o.d,t:+o.t};if(id)Object.assign(t,r);else state.tasks.push(Object.assign({id:"t"+Date.now()},r))},
+  const t=id?state.tasks.find(x=>x.id===id):{name:"",skill:state.skills[0]?state.skills[0].id:"",t:7,d:2,m:"w",wd:[],on:sel};
+  form(id?"Изменить задание":"Новое задание",[
+    {k:"name",l:"Название",v:t.name,m:50},
+    {k:"skill",l:"Навык, который оно прокачивает",o:[["","Без навыка"]].concat(state.skills.map(s=>[s.id,s.i+" "+s.n])),v:t.skill},
+    {k:"d",l:"Сложность",o:DIFF,v:t.d||2},
+    {k:"m",l:"Когда выполнять",o:[["w","Гибко: несколько раз в неделю"],["d","По дням недели"],["o","Один раз, в выбранный день"]],v:t.m||"w"},
+    {k:"t",l:"Сколько раз в неделю",o:TOPT,v:t.t||7,g:"w"},
+    {cb:1,l:"Дни недели",v:t.wd||[],g:"d"},
+    {k:"on",l:"Дата",t:"date",v:t.on||sel,g:"o"}],
+    o=>{const r={name:o.name.trim(),skill:o.skill,d:+o.d,m:o.m,t:+o.t||7,wd:o.m==="d"?o.wd.slice().sort():[],on:o.m==="o"?o.on:""};
+      if(r.m==="d"&&!r.wd.length)return "Выберите хотя бы один день недели";
+      if(r.m==="o"&&!r.on)return "Выберите дату";
+      if(id)Object.assign(t,r);else state.tasks.push(Object.assign({id:"t"+Date.now()},r))},
     id&&(()=>{state.tasks=state.tasks.filter(x=>x.id!==id);for(const k in state.done)state.done[k]=state.done[k].filter(i=>i!==id)}));
 }
 function editSkill(id){
@@ -261,9 +286,9 @@ function render(){
   // quests
   const sd=parse(sel);
   $("qTitle").textContent=sel===T?"Квесты на сегодня":"Квесты: "+sd.toLocaleDateString("ru-RU",{day:"numeric",month:"long"});
-  $("quests").innerHTML=state.tasks.map(t=>{
-    const on=isDone(sel,t.id),s=skillOf(t),wc=weekCount(t.id,sd),st=t.t===7?streak(t.id):0;
-    return `<button class="q${on?" on":""}" data-q="${t.id}" aria-pressed="${on}"${sel>T?" disabled":""}><span class="box">✓</span><span><b>${esc(t.name)}</b><small>${s?s.i+" "+esc(s.n)+" · ":""}${st?"🔥 "+st+" · ":""}неделя ${wc} из ${t.t}</small><div class="wk"><i style="width:${Math.min(100,wc/t.t*100)}%"></i></div></span><span class="r">+${xpOf(t)} XP</span></button>`}).join("")||'<div class="empty">Заданий нет. Добавьте первое во вкладке «Задания».</div>';
+  $("quests").innerHTML=state.tasks.filter(t=>onDay(t,sel)||isDone(sel,t.id)).map(t=>{
+    const on=isDone(sel,t.id),s=skillOf(t),wc=weekCount(t.id,sd),st=hasStreak(t)?streak(t.id):0;
+    return `<button class="q${on?" on":""}" data-q="${t.id}" aria-pressed="${on}"${sel>T?" disabled":""}><span class="box">✓</span><span><b>${esc(t.name)}</b><small>${s?s.i+" "+esc(s.n)+" · ":""}${st?"🔥 "+st+" · ":""}${t.m==="o"?"разовое":"неделя "+wc+" из "+need(t)}</small>${t.m==="o"?"":`<div class="wk"><i style="width:${Math.min(100,wc/need(t)*100)}%"></i></div>`}</span><span class="r">+${xpOf(t)} XP</span></button>`}).join("")||'<div class="empty">'+(state.tasks.length?"На этот день ничего не запланировано.":"Заданий нет. Добавьте первое во вкладке «Задания».")+"</div>";
   $("restB").textContent=state.rest[sel]?"🛌 Выходной · отменить":"🛌 Выходной";
   $("mood").innerHTML=MOODS.map((e,i)=>`<button data-mood="${i+1}" class="${state.mood[sel]===i+1?"on":""}" aria-label="Настроение ${i+1} из 5">${e}</button>`).join("");
   // calendar
@@ -280,10 +305,10 @@ function render(){
     if(d===1||d%5===0)s+=`<text x="${x+bw*.35}" y="${H-6}" text-anchor="middle">${d}</text>`}
   $("chart").innerHTML=s;
   // tasks page
-  $("tlist").innerHTML=state.tasks.map(t=>{const s=skillOf(t);return `<div class="item"><div class="ic" style="background:${s?s.c+"33":"var(--bg)"}">${s?s.i:"•"}</div><div class="m"><b>${esc(t.name)}</b><span class="sm">${s?esc(s.n):"Без навыка"} · ${TOPT.find(o=>o[0]===t.t)[1].toLowerCase()} · +${xpOf(t)} XP</span></div><button class="ed" data-et="${t.id}" aria-label="Изменить" title="Изменить">✎</button></div>`}).join("")||'<div class="empty">Пока пусто.</div>';
+  $("tlist").innerHTML=state.tasks.map(t=>{const s=skillOf(t);return `<div class="item"><div class="ic" style="background:${s?s.c+"33":"var(--bg)"}">${s?s.i:"•"}</div><div class="m"><b>${esc(t.name)}</b><span class="sm">${s?esc(s.n):"Без навыка"} · ${sched(t)} · +${xpOf(t)} XP</span></div><button class="ed" data-et="${t.id}" aria-label="Изменить" title="Изменить">✎</button></div>`}).join("")||'<div class="empty">Пока пусто.</div>';
   $("gTitle").textContent="Чек-лист: "+view.toLocaleDateString("ru-RU",{month:"long",year:"numeric"});
   let g='<thead><tr><th class="nm"></th>';for(let d=1;d<=days;d++)g+=`<th class="d${y+"-"+pad(m+1)+"-"+pad(d)===T?" t":""}">${d}</th>`;g+="</tr></thead><tbody>";
-  state.tasks.forEach(t=>{g+=`<tr><td class="nm">${esc(t.name)}</td>`;for(let d=1;d<=days;d++){const k=y+"-"+pad(m+1)+"-"+pad(d),on=isDone(k,t.id);g+=`<td><button class="cell${on?" on":""}${k===T?" t":""}" data-k="${k}" data-id="${t.id}" aria-pressed="${on}" aria-label="${esc(t.name)}, ${d}"${k>T?" disabled":""}></button></td>`}g+="</tr>"});
+  state.tasks.forEach(t=>{g+=`<tr><td class="nm">${esc(t.name)}</td>`;for(let d=1;d<=days;d++){const k=y+"-"+pad(m+1)+"-"+pad(d),on=isDone(k,t.id);g+=`<td><button class="cell${on?" on":""}${k===T?" t":""}" data-k="${k}" data-id="${t.id}" aria-pressed="${on}" aria-label="${esc(t.name)}, ${d}"${k>T||!(on||onDay(t,k))?" disabled":""}></button></td>`}g+="</tr>"});
   $("grid").innerHTML=g+"</tbody>";
   // skills
   $("slist").innerHTML=state.skills.map(s=>{const k=C.sk[s.id],n=state.tasks.filter(t=>t.skill===s.id).length;return `<div class="skc" style="--c:${s.c}"><div class="row"><b>${s.i} ${esc(s.n)}</b><button class="ed" data-es="${s.id}" aria-label="Изменить навык" title="Изменить">✎</button></div><div class="sm">Уровень ${k.lv} · ${k.n} отметок · заданий: ${n}</div><div class="bar"><i style="width:${Math.round((k.xp-k.lo)/(k.hi-k.lo)*100)}%"></i></div><div class="sm">${k.xp-k.lo} из ${k.hi-k.lo} XP</div></div>`}).join("")||'<div class="empty">Добавьте первый навык.</div>';
