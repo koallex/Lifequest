@@ -1,9 +1,16 @@
 {
-  "name": "LIFE QUEST",
+  "name": "Life Quest",
   "short_name": "Life Quest",
+  "description": "Игровой трекер привычек: задания, навыки, достижения и награды",
+  "lang": "ru",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0b1020",
-  "theme_color": "#111827",
-  "description": "Игровой трекер привычек и личного прогресса"
+  "background_color": "#120d2c",
+  "theme_color": "#5b3df5",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+    {"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ]
 }

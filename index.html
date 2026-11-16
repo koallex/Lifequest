@@ -1,109 +1,337 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<meta name="description" content="LIFE QUEST — игровой трекер привычек и личного прогресса">
+<meta name="theme-color" content="#5b3df5">
+<meta name="description" content="Life Quest — игровой трекер привычек: задания, навыки, достижения и награды">
 <link rel="manifest" href="manifest.webmanifest">
-<title>LIFE QUEST</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Life Quest">
+<title>Life Quest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Press+Start+2P&display=swap">
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--panel:#141c2e;--panel2:#1a253a;--line:#29364d;--text:#edf2fb;--muted:#93a2b8;--green:#55d6a1;--blue:#7da8ff;--gold:#f3c969;--red:#ff7b83;--radius:18px}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#182644 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1180px;margin:auto;padding:24px 20px 50px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}.brand{font-weight:850;letter-spacing:.12em;font-size:21px}.sub{color:var(--muted);font-size:11px;letter-spacing:.16em}.topright{display:flex;align-items:center;gap:10px}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:12px}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.nav button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 14px;border-radius:12px}.nav button.active,.btn.primary{background:var(--green);color:#062219;border-color:var(--green);font-weight:750}.btn.ghost{background:transparent}.btn.danger{color:var(--red)}button:disabled{opacity:.4;cursor:not-allowed}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:linear-gradient(145deg,rgba(26,37,58,.96),rgba(18,27,44,.96));border:1px solid var(--line);border-radius:var(--radius);padding:18px;min-width:0}.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}.span3{grid-column:span 3}.eyebrow{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.13em}.big{font-size:34px;font-weight:800;letter-spacing:-.04em}.muted{color:var(--muted)}.small{font-size:12px;color:var(--muted)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.row.wrap{flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.stat{background:rgba(5,12,25,.28);padding:12px;border-radius:13px}.stat strong{display:block;font-size:22px;margin-top:3px}.progress{height:9px;background:#26344b;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#39bd8c,#85e5b9);border-radius:99px}.sectiontitle{font-size:17px;font-weight:750;margin:0 0 14px}.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.month{font-weight:750;font-size:16px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.dow,.day{display:grid;place-items:center;min-height:37px;font-size:12px}.dow{color:var(--muted);font-size:10px}.day{border:1px solid transparent;border-radius:10px;background:rgba(4,10,20,.2);position:relative;color:var(--text)}.day.other{opacity:.3}.day.today{border-color:var(--blue)}.day.selected{background:var(--green);color:#062219;font-weight:800}.day.has:after{content:"";position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--green)}.day.selected:after{background:#062219}.chart{width:100%;height:180px;display:block}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.task{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(41,54,77,.7)}.task:last-child{border:0}.check{width:23px;height:23px;flex:none;border:1px solid #52627b;border-radius:7px;background:transparent;color:#062219}.check.done{background:var(--green);border-color:var(--green)}.taskmain{flex:1;min-width:0}.taskname{font-weight:650;overflow-wrap:anywhere}.tag{font-size:10px;color:var(--muted);background:#26344b;padding:4px 8px;border-radius:999px;white-space:nowrap}.xp{font-size:12px;color:var(--green);white-space:nowrap}.actions{display:flex;gap:6px}.iconbtn{border:0;background:transparent;color:var(--muted);padding:6px}.formgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:#0d1628;color:var(--text)}.ach{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:13px;margin-bottom:9px}.ach .ico{font-size:24px}.ach.lock{opacity:.45}.empty{padding:22px;text-align:center;color:var(--muted)}.footer{text-align:center;color:#66758d;font-size:10px;margin-top:22px}.hide{display:none!important}
-@media(max-width:760px){.app{padding:16px 12px 35px}.span8,.span7,.span6,.span5,.span4,.span3{grid-column:span 12}.big{font-size:29px}.stats{gap:6px}.stat{padding:9px}.stat strong{font-size:18px}.formgrid{grid-template-columns:1fr 1fr}.formgrid .wide{grid-column:span 2}.top{align-items:flex-start}.pill{display:none}.chart{height:160px}}
+:root{--bg:#eeeafc;--card:#fff;--ink:#241c4a;--mute:#6d6693;--line:#ddd8f3;--acc:#6d4aff;--acc2:#e6defe;--gold:#f0a500;--ok:#14a370;--warn:#e0524a;--h1:#5b3df5;--h2:#9b6bff;--sh:0 8px 28px rgba(70,45,160,.12);--f:"Nunito","Segoe UI",system-ui,sans-serif;--px:"Press Start 2P",ui-monospace,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120d2c;--card:#1d1647;--ink:#eeeaff;--mute:#a59bd8;--line:#33296a;--acc:#a08aff;--acc2:#2d2370;--gold:#ffc83d;--ok:#3fd69b;--warn:#ff7d72;--h1:#3a2a9c;--h2:#6a3fd0;--sh:0 8px 28px rgba(0,0,0,.35);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#120d2c;--card:#1d1647;--ink:#eeeaff;--mute:#a59bd8;--line:#33296a;--acc:#a08aff;--acc2:#2d2370;--gold:#ffc83d;--ok:#3fd69b;--warn:#ff7d72;--h1:#3a2a9c;--h2:#6a3fd0;--sh:0 8px 28px rgba(0,0,0,.35);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 var(--f);color:var(--ink);background:radial-gradient(900px 500px at 10% -10%,var(--acc2),transparent 60%),var(--bg);background-attachment:fixed}
+.app{max-width:1060px;margin:0 auto;padding:18px 14px 70px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.brand{font:400 16px/1.4 var(--px)}
+.sub{color:var(--mute);font-weight:600;text-transform:capitalize;font-size:14px}
+.coin{background:var(--card);box-shadow:var(--sh);border-radius:99px;padding:6px 14px;font-weight:800}
+.nav{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:6px}
+.nav button{border:0;background:var(--card);border-radius:99px;padding:8px 16px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(70,45,160,.08);transition:transform .15s}
+.nav button:hover{transform:translateY(-2px)}
+.nav button.on{background:linear-gradient(135deg,var(--h1),var(--h2));color:#fff}
+.card{background:var(--card);border-radius:22px;padding:20px;box-shadow:var(--sh);margin-bottom:16px}
+h2{font:800 18px/1.3 var(--f);margin:0 0 12px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:linear-gradient(135deg,var(--h1),var(--h2));color:#fff;transition:transform .3s}
+.hero.lu{animation:lu 1s}
+@keyframes lu{30%{transform:scale(1.03);box-shadow:0 0 0 6px var(--gold)}}
+.avatar{width:84px;height:84px;display:grid;place-items:center;font-size:46px;background:rgba(255,255,255,.18);border-radius:22px;animation:fl 3s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-4px)}}
+.lvl{font:400 11px/1.6 var(--px);margin-bottom:8px}.lvl b{color:#ffd761;font-weight:400}
+.xpbar{height:16px;background:rgba(255,255,255,.22);border-radius:99px;overflow:hidden}
+.xpbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd761,#ffb02e);border-radius:99px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.xpt{font-size:13px;opacity:.9;margin-top:4px}
+.goal{grid-column:1/-1;font-size:13px;opacity:.95}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;width:100%;min-width:0}
+.hero input{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35);color:#fff}
+.hero input::placeholder{color:rgba(255,255,255,.65)}
+.g{display:grid;grid-template-columns:repeat(12,1fr);column-gap:16px}
+.s7{grid-column:span 7}.s5{grid-column:span 5}.s6{grid-column:span 6}.s12{grid-column:span 12}
+.page{display:none}.page.show{display:block;animation:in .35s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.btn{border:0;border-radius:99px;background:var(--acc2);color:var(--acc);font-weight:700;padding:7px 16px;transition:transform .12s}
+.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.96)}
+.btn.go{background:linear-gradient(135deg,var(--h1),var(--h2));color:#fff}
+.btn.del{color:var(--warn);margin-left:auto}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.q{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);border:0;border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:0 0 0 1px var(--line),0 2px 10px rgba(70,45,160,.08);transition:transform .15s}
+.q:hover:not(:disabled){transform:translateY(-1px)}.q:disabled{opacity:.5;cursor:default}
+.q.on{background:linear-gradient(90deg,var(--acc2),var(--card));box-shadow:0 0 0 2px var(--ok)}
+.box{width:30px;height:30px;border:2px solid var(--line);border-radius:50%;display:grid;place-items:center;color:transparent;font-size:17px}
+.q.on .box{background:var(--ok);border-color:var(--ok);color:#fff}
+.q.pop .box{animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.35) rotate(12deg)}}
+.q small,.sm{display:block;color:var(--mute);font-size:12px}
+.wk,.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:4px;max-width:240px}
+.wk i,.bar i{display:block;height:100%;background:var(--ok);transition:width .6s}
+.r{font:800 12px var(--f);background:var(--acc2);color:var(--acc);padding:3px 10px;border-radius:99px;white-space:nowrap}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dw{text-align:center;font-size:11px;color:var(--mute)}
+.day{min-height:38px;border:2px solid transparent;border-radius:10px;background:color-mix(in srgb,var(--acc) calc(var(--h,0)*55%),var(--bg));font-weight:600;transition:transform .12s}
+.day:hover{transform:scale(1.08)}
+.day.o{opacity:.35}.day.t{border-color:var(--gold)}.day.s{background:var(--acc);color:#fff}
+.rs{font-size:12px}
+.mood button{font-size:24px;background:none;border:2px solid transparent;border-radius:10px;padding:2px 6px;transition:transform .15s}
+.mood button:hover{transform:scale(1.2)}.mood button.on{border-color:var(--acc);background:var(--acc2)}
+.chart{width:100%;height:auto;display:block}.chart text{fill:var(--mute);font-size:10px}
+.chart rect{transform-box:fill-box;transform-origin:center bottom;animation:gr .6s backwards}
+@keyframes gr{from{transform:scaleY(0)}}
+.scroll{overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;min-width:100%}
+th,td{padding:0;text-align:center;font-size:12px;color:var(--mute)}
+th.d{min-width:30px;padding:4px 0}th.d.t{color:var(--acc);font-weight:800}
+.nm{position:sticky;left:0;background:var(--card);text-align:left;padding:5px 8px 5px 0;min-width:140px;max-width:180px;color:var(--ink);font-size:14px;z-index:1}
+.cell{width:26px;height:26px;margin:2px;border-radius:8px;border:1.5px solid var(--line);background:transparent;padding:0;display:inline-block;vertical-align:middle}
+.cell.on{background:var(--ok);border-color:var(--ok)}.cell.t{border-color:var(--gold)}.cell:disabled{opacity:.3;cursor:default}
+.item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}.item .m{flex:1;min-width:0}
+.ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:22px;flex:none}
+.ed{border:0;background:var(--bg);color:var(--mute);border-radius:10px;width:34px;height:34px}.ed:hover{color:var(--acc)}
+.radar{width:100%;max-width:380px;margin:0 auto;display:block}
+.sk{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.skc{border-radius:18px;padding:14px;background:var(--bg);border-left:6px solid var(--c);transition:transform .2s}
+.skc:hover{transform:translateY(-3px) rotate(-.4deg)}
+.skc .bar i{background:var(--c)}
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.a{border-radius:16px;background:var(--bg);padding:12px;text-align:center;font-size:13px;transition:transform .2s}
+.a:hover{transform:scale(1.04)}
+.a span{display:block;font-size:32px}.a.off span{filter:grayscale(1);opacity:.5}
+.a.on{background:var(--acc2);box-shadow:0 0 0 2px var(--gold)}
+.a .bar{margin:6px auto 0}
+.fly{position:fixed;z-index:20;font-weight:800;color:var(--gold);pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.cf{position:fixed;z-index:20;width:9px;height:9px;border-radius:2px;pointer-events:none}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--card);padding:10px 16px;border-radius:12px;font-weight:700;max-width:90vw;text-align:center;opacity:0;pointer-events:none;transition:opacity .3s;z-index:30}
+#toast.show{opacity:1}
+#toast{display:flex;align-items:center;justify-content:center;gap:12px}
+.ti{font-size:36px;line-height:1;animation:pop .6s}
+dialog{border:0;border-radius:22px;padding:22px;background:var(--card);color:var(--ink);box-shadow:var(--sh);width:min(420px,92vw)}
+dialog::backdrop{background:rgba(20,10,50,.55)}
+dialog label{display:block;font-size:14px;color:var(--mute);margin-bottom:12px}
+.dact{display:flex;gap:8px;flex-wrap:wrap}
+.empty{color:var(--mute);padding:8px 0}
+@media (max-width:760px){.s7,.s5,.s6{grid-column:span 12}.hero{grid-template-columns:1fr;justify-items:center;text-align:center}.hero>div{width:100%}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div><div class="brand">LIFE QUEST</div><div class="sub">PERSONAL PROGRESS SYSTEM</div></div><div class="topright"><span class="pill">V1.0 · LOCAL EDITION</span><span id="todayLabel" class="small"></span></div></header>
-<nav class="nav">
-<button class="active" data-page="dashboard">Обзор</button><button data-page="tasks">Задания</button><button data-page="achievements">Достижения</button><button data-page="rewards">Награды</button>
-</nav>
-<main id="dashboard" class="page">
-<div class="grid">
-<section class="card span4">
-<div class="eyebrow">Твой уровень</div><div class="row" style="align-items:end"><div class="big" id="level">LVL 1</div><div class="muted" id="totalXp">0 XP</div></div>
-<div class="progress" style="margin:12px 0 7px"><i id="levelBar" style="width:0%"></i></div><div class="row small"><span>Прогресс до следующего уровня</span><span id="levelText">0 / 250 XP</span></div>
-<div class="stats"><div class="stat"><span class="eyebrow">Монеты</span><strong id="coins">0</strong></div><div class="stat"><span class="eyebrow">Выполнено</span><strong id="doneCount">0</strong></div><div class="stat"><span class="eyebrow">Достижения</span><strong id="achCount">0</strong></div></div>
-</section>
-<section class="card span8">
-<div class="row"><h2 class="sectiontitle">Активность за неделю</h2><span class="small">XP по дням</span></div><div id="weekChart"></div><div class="legend"><span><i class="dot" style="background:var(--green)"></i>Заработанный опыт</span></div>
-</section>
-<section class="card span7">
-<div class="calendar-head"><button class="btn ghost" id="prevMonth">‹</button><div class="month" id="monthName"></div><button class="btn ghost" id="nextMonth">›</button></div>
-<div class="cal" id="calendar"></div><div class="small" style="margin-top:10px">Выбери день, чтобы посмотреть задания и историю выполнения.</div>
-</section>
-<section class="card span5">
-<div class="row"><h2 class="sectiontitle">Прогресс месяца</h2><span class="small" id="monthPercent">0%</span></div><div id="monthChart"></div><div class="stats"><div class="stat"><span class="eyebrow">Активных дней</span><strong id="activeDays">0</strong></div><div class="stat"><span class="eyebrow">Всего XP</span><strong id="monthXp">0</strong></div><div class="stat"><span class="eyebrow">Заданий</span><strong id="monthTasks">0</strong></div></div>
-</section>
-<section class="card span12">
-<div class="row wrap"><div><h2 class="sectiontitle" style="margin-bottom:3px">Задания на <span id="selectedDateLabel"></span></h2><div class="small">Отмечай выполнение — прогресс обновится автоматически.</div></div><button class="btn primary" id="addFromHome">＋ Новое задание</button></div>
-<div id="todayTasks"></div>
-</section>
+  <header class="top"><div><div class="brand">LIFE QUEST</div><div class="sub" id="today"></div></div><div class="coin">🪙 <b id="coinTop">0</b></div></header>
+  <section class="card hero" id="hero">
+    <div class="avatar" id="av"></div>
+    <div><div class="lvl" id="lvl"></div><div class="xpbar"><i id="xpb"></i></div><div class="xpt" id="xpt"></div></div>
+    <label class="goal">Моя цель — зачем мне это<input id="goal" maxlength="90" placeholder="Например: больше энергии и спокойствия"></label>
+  </section>
+  <nav class="nav" aria-label="Разделы">
+    <button data-p="home" class="on">Обзор</button><button data-p="tasks">Задания</button><button data-p="skills">Навыки</button><button data-p="ach">Достижения</button><button data-p="shop">Награды</button>
+  </nav>
+
+  <main>
+  <div class="page show" id="p-home"><div class="g">
+    <section class="card s7"><div class="row"><h2 id="qTitle"></h2><button class="btn" id="restB"></button></div><div id="quests"></div><div class="mood" id="mood" role="group" aria-label="Настроение"></div></section>
+    <section class="card s5"><div class="row"><button class="btn" data-m="-1" aria-label="Предыдущий месяц">‹</button><h2 id="mName" style="margin:0;text-transform:capitalize"></h2><button class="btn" data-m="1" aria-label="Следующий месяц">›</button></div><div class="cal" id="cal" style="margin-top:12px"></div><p class="sm" style="margin-top:8px">Нажмите на день, чтобы увидеть или отметить его задания.</p></section>
+    <section class="card s12"><h2>Опыт по дням месяца</h2><svg id="chart" class="chart" viewBox="0 0 620 170" role="img" aria-label="График опыта по дням"></svg></section>
+  </div></div>
+
+  <div class="page" id="p-tasks">
+    <section class="card"><div class="row"><h2>Мои задания</h2><button class="btn go" id="addT">＋ Новое задание</button></div><div id="tlist"></div></section>
+    <section class="card"><h2 id="gTitle" style="text-transform:capitalize"></h2><div class="scroll"><table id="grid"></table></div></section>
+  </div>
+
+  <div class="page" id="p-skills">
+    <section class="card"><div class="row"><h2>Карта навыков</h2><button class="btn go" id="addS">＋ Новый навык</button></div><div id="radar"></div></section>
+    <section class="card"><h2>Мои навыки</h2><div class="sk" id="slist"></div></section>
+  </div>
+
+  <div class="page" id="p-ach"><section class="card"><h2>Достижения</h2><div class="ach" id="alist"></div></section></div>
+
+  <div class="page" id="p-shop">
+    <section class="card"><div class="row"><h2>Магазин наград</h2><button class="btn go" id="addR">＋ Новая награда</button></div><p class="sm">Монеты вы получаете за выполненные задания. Тратьте их на то, что приятно именно вам.</p><div id="rlist"></div></section>
+    <section class="card"><h2>История покупок</h2><div id="hist"></div></section>
+  </div>
+  </main>
 </div>
-</main>
-<main id="tasks" class="page hide">
-<section class="card">
-<div class="row wrap"><div><h2 class="sectiontitle" style="margin-bottom:3px">Мои задания</h2><div class="small">Управляй привычками, целями и разовыми делами.</div></div><button class="btn primary" id="addTask">＋ Добавить задание</button></div>
-<div id="taskForm" class="hide" style="margin:18px 0;padding:16px;background:#0d1628;border:1px solid var(--line);border-radius:14px">
-<h3 id="formTitle" class="sectiontitle">Новое задание</h3><div class="formgrid">
-<div class="field wide"><label>Название</label><input id="taskName" maxlength="70" placeholder="Например, прогулка 30 минут"></div>
-<div class="field"><label>Категория</label><select id="taskCategory"><option value="Здоровье">Здоровье</option><option value="Работа">Работа</option><option value="Финансы">Финансы</option><option value="Развитие">Развитие</option><option value="Личная жизнь">Личная жизнь</option></select></div>
-<div class="field"><label>Периодичность</label><select id="taskRepeat"><option value="daily">Ежедневно</option><option value="weekly">Еженедельно</option><option value="once">Разовое</option></select></div>
-<div class="field"><label>XP</label><input id="taskXp" type="number" min="1" max="500" value="25"></div>
-<div class="field"><label>Монеты</label><input id="taskCoins" type="number" min="0" max="500" value="10"></div>
-<div class="field"><label>Дата начала</label><input id="taskStart" type="date"></div>
-</div><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost" id="cancelForm">Отмена</button><button class="btn primary" id="saveTask">Сохранить</button></div></div>
-<div id="allTasks"></div>
-</section></main>
-<main id="achievements" class="page hide"><section class="card"><h2 class="sectiontitle">Коллекция достижений</h2><div class="small" id="achievementSummary"></div><div id="achievementList" style="margin-top:15px"></div></section></main>
-<main id="rewards" class="page hide"><section class="card"><div class="row wrap"><div><h2 class="sectiontitle" style="margin-bottom:3px">Магазин наград</h2><div class="small">Обменивай игровые монеты на приятные для себя вещи.</div></div><div class="pill">Баланс: <b id="rewardBalance">0</b> 🪙</div></div>
-<div class="formgrid" style="margin:18px 0"><div class="field wide"><label>Новая награда</label><input id="rewardName" placeholder="Например, вечер в кино"></div><div class="field"><label>Стоимость, монет</label><input id="rewardPrice" type="number" min="1" value="100"></div><div class="field" style="align-self:end"><button class="btn primary" id="addReward">Добавить</button></div></div><div id="rewardList"></div><h3 class="sectiontitle" style="margin-top:24px">История обмена</h3><div id="redemptionHistory"></div></section></main>
-<div class="footer">LIFE QUEST · ТВОЙ ПРОГРЕСС — ТВОЯ ИСТОРИЯ</div>
-</div>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
 <script>
-const $=id=>document.getElementById(id);
-const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-const shift=(date,n)=>{let d=new Date(date+'T12:00:00');d.setDate(d.getDate()+n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-const fmt=date=>new Date(date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
-const defaultState={tasks:[{id:1,name:'Прогулка или тренировка',category:'Здоровье',repeat:'daily',xp:30,coins:10,start:today()},{id:2,name:'Прочитать 20 страниц',category:'Развитие',repeat:'daily',xp:20,coins:8,start:today()},{id:3,name:'Контроль расходов',category:'Финансы',repeat:'daily',xp:25,coins:10,start:today()},{id:4,name:'Главная рабочая задача',category:'Работа',repeat:'daily',xp:40,coins:15,start:today()},{id:5,name:'Время с близкими',category:'Личная жизнь',repeat:'daily',xp:25,coins:10,start:today()},{id:6,name:'Подвести итоги недели',category:'Развитие',repeat:'weekly',xp:50,coins:20,start:today()}], completions:{},rewards:[{id:1,name:'Вечер любимого сериала',cost:50},{id:2,name:'Покупка для себя',cost:150},{id:3,name:'Выходной без обязательств',cost:200}],redemptions:[],unlocked:[]};
-let state;try{state=JSON.parse(localStorage.getItem('lifeQuestV1'))||structuredClone(defaultState)}catch(e){state=structuredClone(defaultState)}
-let selected=today(),viewDate=new Date(),editing=null;
-function save(){localStorage.setItem('lifeQuestV1',JSON.stringify(state));render()}
-function key(task,date){return task+'_'+date}
-function isDone(t,date){return !!state.completions[key(t.id,date)]}
-function eligible(t,date){if(date<t.start)return false;if(t.repeat==='once')return date===t.start;if(t.repeat==='daily')return true;const d=new Date(date+'T12:00:00');return d.getDay()===1}
-function datesForTask(t){return Object.keys(state.completions).filter(k=>k.startsWith(t.id+'_')&&state.completions[k]).map(k=>k.slice(String(t.id).length+1))}
-function completionData(k,v){if(v&&typeof v==='object')return v;let id=Number(k.split('_')[0]),t=state.tasks.find(x=>x.id===id);return t?{name:t.name,xp:t.xp,coins:t.coins,category:t.category}:null}
-function stats(){let entries=Object.entries(state.completions).filter(([k,v])=>v);let totalXp=0,coins=0;for(const [k,v] of entries){let snap=completionData(k,v);if(snap){totalXp+=snap.xp;coins+=snap.coins}}let spent=state.redemptions.reduce((s,r)=>s+r.cost,0);return {entries,totalXp,coins:coins-spent,rawCoins:coins,done:entries.length,spent}}
-function allAchievements(){let s=stats(),active=new Set(s.entries.map(([k])=>k.split('_')[1])).size;return [{id:'first',icon:'🌱',name:'Первый шаг',desc:'Выполнить первое задание',ok:s.done>=1},{id:'five',icon:'⭐',name:'Пять побед',desc:'Выполнить 5 заданий',ok:s.done>=5},{id:'ten',icon:'🎯',name:'Стабильность',desc:'Выполнить 10 заданий',ok:s.done>=10},{id:'xp500',icon:'🏆',name:'Опытный игрок',desc:'Набрать 500 XP',ok:s.totalXp>=500},{id:'days7',icon:'🔥',name:'Неделя активности',desc:'Быть активным 7 разных дней',ok:active>=7},{id:'century',icon:'💎',name:'Большая дистанция',desc:'Выполнить 100 заданий',ok:s.done>=100},{id:'balanced',icon:'🌈',name:'Разносторонний',desc:'Выполнить задания во всех пяти категориях',ok:['Здоровье','Работа','Финансы','Развитие','Личная жизнь'].every(c=>s.entries.some(([k,v])=>completionData(k,v)?.category===c))}]}
-function categoryEmoji(c){return {'Здоровье':'♥','Работа':'▣','Финансы':'◆','Развитие':'✦','Личная жизнь':'☼'}[c]||'•'}
-function dayXP(date){let n=0;for(const [k,v] of Object.entries(state.completions)){if(v&&k.endsWith('_'+date)){let snap=completionData(k,v);if(snap)n+=snap.xp}}return n}
-function levelInfo(xp){return {level:Math.floor(xp/250)+1,progress:xp%250}}
-function render(){
- const s=stats(),li=levelInfo(s.totalXp);$('level').textContent='LVL '+li.level;$('totalXp').textContent=s.totalXp+' XP';$('levelBar').style.width=(li.progress/250*100)+'%';$('levelText').textContent=li.progress+' / 250 XP';$('coins').textContent=s.coins;$('doneCount').textContent=s.done;
- const unlocked=allAchievements().filter(a=>a.ok);$('achCount').textContent=unlocked.length;
- const m=viewDate.getMonth(),y=viewDate.getFullYear();$('monthName').textContent=new Date(y,m,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});$('selectedDateLabel').textContent=fmt(selected);
- renderCalendar(y,m);renderWeekChart();renderMonthChart(y,m);renderDayTasks();renderAllTasks();renderAchievements();renderRewards();
+(function(){
+const KEY="life-quest-v2",$=i=>document.getElementById(i),RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const PAL=[["#ef5b6b","Красный"],["#4c8dff","Синий"],["#f0a500","Золотой"],["#9b6bff","Фиолетовый"],["#19b58a","Зелёный"],["#ff8a3d","Оранжевый"]];
+const DIFF=[[1,"Лёгкая · 10 XP"],[2,"Средняя · 20 XP"],[3,"Трудная · 40 XP"]],XPV=[0,10,20,40];
+const TOPT=[[7,"Каждый день"],[6,"6 раз в неделю"],[5,"5 раз в неделю"],[4,"4 раза в неделю"],[3,"3 раза в неделю"],[2,"2 раза в неделю"],[1,"1 раз в неделю"]];
+const TITLES=["Новичок","Ученик","Искатель","Воин","Мастер","Герой","Легенда"],ICONS=["🥚","🐣","🧭","🛡️","⚔️","👑","🐉"],MOODS=["😫","😕","😐","🙂","🤩"];
+function seed(){
+  const s={skills:[{id:"s1",n:"Здоровье",i:"💪",c:PAL[0][0]},{id:"s2",n:"Работа",i:"💼",c:PAL[1][0]},{id:"s3",n:"Финансы",i:"💰",c:PAL[2][0]},{id:"s4",n:"Развитие",i:"📚",c:PAL[3][0]},{id:"s5",n:"Близкие",i:"❤️",c:PAL[4][0]}],
+  tasks:[{id:"t1",name:"Прогулка или тренировка",skill:"s1",t:7,d:2},{id:"t2",name:"Прочитать 20 страниц",skill:"s4",t:7,d:2},{id:"t3",name:"Контроль расходов",skill:"s3",t:7,d:2},{id:"t4",name:"Главная рабочая задача",skill:"s2",t:7,d:3},{id:"t5",name:"Время с близкими",skill:"s5",t:7,d:2},{id:"t6",name:"Подвести итоги недели",skill:"s4",t:1,d:3}],
+  done:{},rest:{},mood:{},ach:[],spent:[],goal:"",rewards:[{id:"r1",name:"Вечер любимого сериала",cost:50},{id:"r2",name:"Покупка для себя",cost:150},{id:"r3",name:"Выходной без обязательств",cost:300}]};
+  try{const o=JSON.parse(localStorage.getItem("habit-tracker-v1"));if(o&&o.habits&&o.habits.length){s.tasks=o.habits.map(h=>({id:h.id,name:h.name,skill:"s4",t:h.t||7,d:2}));s.done=o.done||{};s.rest=o.rest||{};s.mood=o.mood||{};s.goal=o.goal||""}}catch(e){}
+  return s;
 }
-function renderCalendar(y,m){let first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate(),prev=new Date(y,m,0).getDate(),html=['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'].map(x=>`<div class="dow">${x}</div>`).join('');for(let i=0;i<42;i++){let n=i-start+1,date,other=false;if(n<1){date=`${y}-${String(m).padStart(2,'0')}-${String(prev+n).padStart(2,'0')}`;other=true}else if(n>days){let d=new Date(y,m+1,n-days);date=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;other=true}else date=`${y}-${String(m+1).padStart(2,'0')}-${String(n).padStart(2,'0')}`;let cls='day'+(other?' other':'')+(date===today()?' today':'')+(date===selected?' selected':'')+(dayXP(date)>0?' has':'');html+=`<button class="${cls}" data-date="${date}">${Number(date.slice(-2))}</button>`} $('calendar').innerHTML=html;$('calendar').querySelectorAll('[data-date]').forEach(b=>b.onclick=()=>{selected=b.dataset.date;render()})}
-function renderWeekChart(){let ds=Array.from({length:7},(_,i)=>shift(today(),i-6)),vals=ds.map(dayXP),max=Math.max(50,...vals),w=560,h=160,bar=34,gap=42;let rects=vals.map((v,i)=>{let bh=v/max*105,x=22+i*(bar+gap),y=120-bh;return `<rect x="${x}" y="${y}" width="${bar}" height="${bh}" rx="7" fill="#55d6a1"/><text x="${x+bar/2}" y="143" text-anchor="middle" fill="#93a2b8" font-size="11">${new Date(ds[i]+'T12:00:00').toLocaleDateString('ru-RU',{weekday:'short'}).slice(0,2)}</text><text x="${x+bar/2}" y="${Math.max(12,y-7)}" text-anchor="middle" fill="#edf2fb" font-size="10">${v||''}</text>`}).join('');$('weekChart').innerHTML=`<svg class="chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line x1="8" y1="120" x2="550" y2="120" stroke="#34435b"/>${rects}</svg>`}
-function renderMonthChart(y,m){let days=new Date(y,m+1,0).getDate(),vals=Array.from({length:days},(_,i)=>dayXP(`${y}-${String(m+1).padStart(2,'0')}-${String(i+1).padStart(2,'0')}`)),active=vals.filter(v=>v>0).length,total=vals.reduce((a,b)=>a+b,0),max=Math.max(50,...vals);$('monthPercent').textContent=Math.round(active/days*100)+'%';$('activeDays').textContent=active;$('monthXp').textContent=total;$('monthTasks').textContent=vals.reduce((sum,v)=>sum+v,0)?Object.entries(state.completions).filter(([k,v])=>v&&k.split('_')[1].startsWith(`${y}-${String(m+1).padStart(2,'0')}`)).length:0;let w=560,h=150,bw=Math.max(3,500/days-3),rect=vals.map((v,i)=>{let bh=v/max*105;return `<rect x="${18+i*(500/days)}" y="${120-bh}" width="${bw}" height="${bh}" rx="3" fill="${v?'#7da8ff':'#29364d'}"/>`}).join('');$('monthChart').innerHTML=`<svg class="chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line x1="8" y1="120" x2="550" y2="120" stroke="#34435b"/>${rect}</svg>`}
-function renderDayTasks(){let list=state.tasks.filter(t=>eligible(t,selected));$('todayTasks').innerHTML=list.length?list.map(t=>`<div class="task"><button class="check ${isDone(t,selected)?'done':''}" data-toggle="${t.id}">${isDone(t,selected)?'✓':''}</button><div class="taskmain"><div class="taskname">${esc(t.name)}</div><div class="small">${categoryEmoji(t.category)} ${t.category} · ${t.repeat==='daily'?'Ежедневно':t.repeat==='weekly'?'По понедельникам':'Разовое'}</div></div><span class="xp">+${t.xp} XP</span></div>`).join(''):'<div class="empty">На этот день заданий нет. Добавь новое или отдохни — это тоже часть прогресса.</div>';$('todayTasks').querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>toggle(Number(b.dataset.toggle),selected))}
-function renderAllTasks(){$('allTasks').innerHTML=state.tasks.length?state.tasks.map(t=>`<div class="task"><div class="taskmain"><div class="taskname">${esc(t.name)}</div><div class="small">${categoryEmoji(t.category)} ${t.category} · ${t.repeat==='daily'?'Ежедневно':t.repeat==='weekly'?'Еженедельно':'Разовое'} · с ${fmt(t.start)}</div></div><span class="xp">+${t.xp} XP</span><div class="actions"><button class="iconbtn" data-edit="${t.id}" title="Изменить">✎</button><button class="iconbtn" data-delete="${t.id}" title="Удалить">✕</button></div></div>`).join(''):'<div class="empty">Пока нет заданий. Создай первое!</div>';$('allTasks').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openForm(Number(b.dataset.edit)));$('allTasks').querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{let id=Number(b.dataset.delete);if(confirm('Удалить задание? Уже выполненные отметки и начисленный за них опыт останутся в истории.')){state.tasks=state.tasks.filter(t=>t.id!==id);save()}})}
-function renderAchievements(){let a=allAchievements(),got=a.filter(x=>x.ok).length;$('achievementSummary').textContent=`Открыто ${got} из ${a.length}. Достижения выдаются автоматически по мере прогресса.`;$('achievementList').innerHTML=a.map(x=>`<div class="ach ${x.ok?'':'lock'}"><div class="ico">${x.ok?x.icon:'🔒'}</div><div><b>${x.name}</b><div class="small">${x.desc}</div></div><div style="margin-left:auto" class="small">${x.ok?'Открыто':'Закрыто'}</div></div>`).join('')}
-function renderRewards(){let s=stats();$('rewardBalance').textContent=s.coins;$('rewardList').innerHTML=state.rewards.map(r=>`<div class="task"><div class="taskmain"><div class="taskname">${esc(r.name)}</div><div class="small">${r.cost} монет</div></div><button class="btn primary" data-buy="${r.id}" ${s.coins<r.cost?'disabled':''}>Обменять</button><button class="iconbtn" data-rdel="${r.id}">✕</button></div>`).join('')||'<div class="empty">Добавь первую награду.</div>';$('rewardList').querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{let r=state.rewards.find(x=>x.id===Number(b.dataset.buy));if(r&&stats().coins>=r.cost){state.redemptions.push({id:Date.now(),name:r.name,cost:r.cost,date:today()});save()}});$('rewardList').querySelectorAll('[data-rdel]').forEach(b=>b.onclick=()=>{state.rewards=state.rewards.filter(r=>r.id!==Number(b.dataset.rdel));save()});$('redemptionHistory').innerHTML=state.redemptions.length?state.redemptions.slice().reverse().map(r=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)"><span>${esc(r.name)} <span class="small">${fmt(r.date)}</span></span><b>−${r.cost} 🪙</b></div>`).join(''):'<div class="small">Пока обменов не было.</div>'}
-function toggle(id,date){let t=state.tasks.find(x=>x.id===id),k=key(id,date);if(!t)return;if(state.completions[k])delete state.completions[k];else state.completions[k]={name:t.name,xp:t.xp,coins:t.coins,category:t.category};save()}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function openForm(id){editing=id;let t=state.tasks.find(x=>x.id===id);$('formTitle').textContent=id?'Редактировать задание':'Новое задание';$('taskName').value=t?.name||'';$('taskCategory').value=t?.category||'Здоровье';$('taskRepeat').value=t?.repeat||'daily';$('taskXp').value=t?.xp||25;$('taskCoins').value=t?.coins??10;$('taskStart').value=t?.start||today();$('taskForm').classList.remove('hide');$('taskName').focus()}
-function closeForm(){$('taskForm').classList.add('hide');editing=null}
-$('addTask').onclick=()=>openForm(null);$('addFromHome').onclick=()=>{document.querySelector('[data-page="tasks"]').click();openForm(null)};$('cancelForm').onclick=closeForm;
-$('saveTask').onclick=()=>{let name=$('taskName').value.trim(),xp=Number($('taskXp').value),coins=Number($('taskCoins').value);if(!name||!Number.isFinite(xp)||xp<1||xp>500||!Number.isFinite(coins)||coins<0||coins>500){alert('Проверь название, XP (1–500) и монеты (0–500).');return}let data={name,category:$('taskCategory').value,repeat:$('taskRepeat').value,xp,coins,start:$('taskStart').value||today()};if(editing){let old=state.tasks.find(t=>t.id===editing);Object.assign(old,data)}else state.tasks.push({id:Math.max(0,...state.tasks.map(t=>t.id))+1,...data});closeForm();save()};
-$('addReward').onclick=()=>{let name=$('rewardName').value.trim(),cost=Number($('rewardPrice').value);if(!name||!Number.isFinite(cost)||cost<1)return;state.rewards.push({id:Math.max(0,...state.rewards.map(r=>r.id))+1,name,cost});$('rewardName').value='';save()};
-$('prevMonth').onclick=()=>{viewDate.setMonth(viewDate.getMonth()-1);render()};$('nextMonth').onclick=()=>{viewDate.setMonth(viewDate.getMonth()+1);render()};
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.page').forEach(x=>x.classList.toggle('hide',x.id!==b.dataset.page))});
-$('todayLabel').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'short',day:'numeric',month:'short'});$('taskStart').value=today();render();
-if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+let state=null;
+try{const r=localStorage.getItem(KEY);if(r)state=JSON.parse(r)}catch(e){}
+if(!state)state=seed();
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};
+const pad=n=>n<10?"0"+n:""+n,kd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const parse=k=>{const p=k.split("-");return new Date(+p[0],+p[1]-1,+p[2])};
+const wkStart=d=>{const x=new Date(d);x.setDate(x.getDate()-(x.getDay()+6)%7);return x};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const now=new Date();now.setHours(0,0,0,0);
+const T=kd(now);let sel=T,view=new Date(now.getFullYear(),now.getMonth(),1),page="home",last=null;
+const isDone=(k,id)=>(state.done[k]||[]).includes(id),xpOf=t=>XPV[t.d||2],skillOf=t=>state.skills.find(s=>s.id===t.skill);
+const gl=L=>75*L*(L-1),sl=L=>40*L*(L-1),lvOf=(x,f)=>{let L=1;while(f(L+1)<=x)L++;return L};
+function weekCount(id,date){const s=wkStart(date);let n=0;for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);if(isDone(kd(d),id))n++}return n}
+function streak(id){const d=new Date(now);let s=0,g=0;if(!isDone(T,id))d.setDate(d.getDate()-1);while(g++<2000){const k=kd(d);if(isDone(k,id))s++;else if(!state.rest[k])break;d.setDate(d.getDate()-1)}return s}
+function calc(){
+  const tk={},sk={},wks={},dayXp={};let xp=0,coins=0,tot=0,perfect=0,wk=0,best=0;
+  state.tasks.forEach(t=>{tk[t.id]=t;if(t.t===7)best=Math.max(best,streak(t.id))});
+  state.skills.forEach(s=>sk[s.id]={xp:0,n:0});
+  for(const k in state.done){
+    const a=state.done[k].filter(i=>tk[i]);let dx=0;
+    a.forEach(i=>{const t=tk[i],x=xpOf(t);dx+=x;coins+=x/2;tot++;if(sk[t.skill]){sk[t.skill].xp+=x;sk[t.skill].n++}const q=i+"|"+kd(wkStart(parse(k)));wks[q]=(wks[q]||0)+1});
+    if(state.tasks.length>=2&&a.length===state.tasks.length){perfect++;dx+=25;coins+=10}
+    dayXp[k]=dx;xp+=dx;
+  }
+  for(const q in wks){if(wks[q]>=tk[q.split("|")[0]].t){wk++;xp+=30;coins+=15}}
+  let topSk=1;for(const id in sk){const o=sk[id];o.lv=lvOf(o.xp,sl);o.lo=sl(o.lv);o.hi=sl(o.lv+1);topSk=Math.max(topSk,o.lv)}
+  const lv=lvOf(xp,gl),spent=state.spent.reduce((a,b)=>a+b.cost,0);
+  return {xp,coins:Math.round(coins)-spent,tot,perfect,wk,best,sk,dayXp,topSk,lv,lo:gl(lv),hi:gl(lv+1)};
+}
+const A=[["👣","Первый шаг","Первая отметка",c=>[c.tot,1]],["🔥","Разгон","Серия 3 дня",c=>[c.best,3]],["⚡","Неделя силы","Серия 7 дней",c=>[c.best,7]],["🏔️","Закалка","Серия 21 день",c=>[c.best,21]],["🌟","Идеальный день","Все задания за день",c=>[c.perfect,1]],["💎","Пять идеальных","5 идеальных дней",c=>[c.perfect,5]],["🎯","Цель недели","Выполнить недельную цель",c=>[c.wk,1]],["💯","Сотня","100 отметок",c=>[c.tot,100]],["🧙","Мастер навыка","Довести навык до 3 уровня",c=>[c.topSk,3]],["🛍️","Заслуженный отдых","Купить первую награду",c=>[state.spent.length,1]],["🚀","Пятый уровень","Достичь уровня 5",c=>[c.lv,5]],["🏁","Полсотни","50 отметок",c=>[c.tot,50]],["💫","Полтысячи","500 отметок",c=>[c.tot,500]],["🌠","Месяц силы","Серия 30 дней",c=>[c.best,30]],["🌋","Несгибаемый","Серия 50 дней",c=>[c.best,50]],["✨","Десять идеальных","10 идеальных дней",c=>[c.perfect,10]],["🎖️","Пять целей недели","Выполнить недельные цели 5 раз",c=>[c.wk,5]],["🧠","Мудрец","Довести навык до 5 уровня",c=>[c.topSk,5]],["🌈","Разносторонний","Прокачать 3 разных навыка",c=>[Object.values(c.sk).filter(k=>k.n>0).length,3]],["🎨","Универсал","Прокачать все навыки",c=>[Object.values(c.sk).filter(k=>k.n>0).length,Math.max(1,state.skills.length)]],["🏅","Тысяча опыта","Набрать 1000 XP",c=>[c.xp,1000]],["👑","Королевский опыт","Набрать 5000 XP",c=>[c.xp,5000]],["🏆","Десятый уровень","Достичь уровня 10",c=>[c.lv,10]],["😊","Чувство дня","Отметить настроение 7 дней",c=>[Object.keys(state.mood).length,7]],["🛌","Умение отдыхать","Взять первый выходной",c=>[Object.keys(state.rest).length,1]],["💰","Копилка","Накопить 200 монет",c=>[c.coins,200]],["🛒","Любитель наград","Купить 5 наград",c=>[state.spent.length,5]],["🛠️","Строитель","Создать 8 заданий",c=>[state.tasks.length,8]]];
+// effects
+let tt;
+function toast(m,ic){const t=$("toast");t.innerHTML=(ic?'<span class="ti">'+ic+'</span>':"")+"<span>"+esc(m)+"</span>";t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),3800)}
+function ctr(el){const r=el.getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]}
+function fly(x,y,txt){if(RM)return;const s=document.createElement("div");s.className="fly";s.textContent=txt;s.style.left=x+"px";s.style.top=y+"px";document.body.appendChild(s);s.animate([{transform:"translate(-50%,0)",opacity:1},{transform:"translate(-50%,-64px)",opacity:0}],{duration:1000}).onfinish=()=>s.remove()}
+function boom(x,y,n){if(RM)return;const cols=["#f0a500","#6d4aff","#19b58a","#ef5b6b","#4c8dff"];for(let i=0;i<n;i++){const p=document.createElement("i");p.className="cf";p.style.left=x+"px";p.style.top=y+"px";p.style.background=cols[i%5];document.body.appendChild(p);const a=Math.random()*6.28,d=60+Math.random()*130;p.animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+90}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:900+Math.random()*600,easing:"cubic-bezier(.2,.7,.3,1)"}).onfinish=()=>p.remove()}}
+function cnt(el,to){const f=+el.dataset.v||0;el.dataset.v=to;if(RM||f===to){el.textContent=to;return}const t0=performance.now();(function s(t){const p=Math.min(1,(t-t0)/600);el.textContent=Math.round(f+(to-f)*p);if(p<1)requestAnimationFrame(s)})(t0)}
+// actions
+function save(){persist();render()}
+function toggle(date,id,btn){
+  const b0=calc(),a=state.done[date]||(state.done[date]=[]),i=a.indexOf(id),add=i<0;
+  if(add)a.push(id);else a.splice(i,1);
+  const b1=calc();persist();render();
+  if(!add)return;
+  const t=state.tasks.find(x=>x.id===id),nb=document.querySelector(`[data-q="${id}"],[data-id="${id}"][data-k="${date}"]`),el=nb||btn,[x,y]=ctr(el);
+  if(nb&&nb.classList.contains("q"))nb.classList.add("pop");
+  fly(x,y,`+${xpOf(t)} XP · 🪙${xpOf(t)/2}`);
+  if(b1.perfect>b0.perfect){boom(x,y,36);toast("Идеальный день! Бонус +25 XP и +10 монет","🌟")}
+  if(b1.lv>b0.lv){const h=$("hero");h.classList.remove("lu");void h.offsetWidth;h.classList.add("lu");const [hx,hy]=ctr($("av"));boom(hx,hy,50);toast("Новый уровень: "+b1.lv+" — "+TITLES[Math.min(b1.lv-1,6)]+"!",ICONS[Math.min(b1.lv-1,6)])}
+}
+function form(title,fields,onSave,onDel){
+  const dlg=$("dlg");let h="<h2>"+title+"</h2>";
+  fields.forEach(f=>{h+="<label>"+f.l;if(f.o)h+=`<select data-f="${f.k}">`+f.o.map(o=>`<option value="${o[0]}"${String(o[0])===String(f.v)?" selected":""}>${esc(o[1])}</option>`).join("")+"</select>";else h+=`<input data-f="${f.k}" type="${f.t||"text"}" value="${esc(f.v==null?"":f.v)}" maxlength="${f.m||60}">`;h+="</label>"});
+  h+='<div class="dact"><button class="btn go" id="fS">Сохранить</button><button class="btn" id="fC">Отмена</button>'+(onDel?'<button class="btn del" id="fD">Удалить</button>':"")+"</div>";
+  dlg.innerHTML=h;dlg.showModal();
+  $("fC").onclick=()=>dlg.close();
+  $("fS").onclick=()=>{const o={};dlg.querySelectorAll("[data-f]").forEach(e=>o[e.dataset.f]=e.value);if(!String(o[fields[0].k]).trim())return;onSave(o);dlg.close();save()};
+  if(onDel)$("fD").onclick=()=>{if(confirm("Удалить? Это действие нельзя отменить.")){onDel();dlg.close();save()}};
+}
+function editTask(id){
+  const t=id?state.tasks.find(x=>x.id===id):{name:"",skill:state.skills[0]?state.skills[0].id:"",t:7,d:2};
+  form(id?"Изменить задание":"Новое задание",[{k:"name",l:"Название",v:t.name,m:50},{k:"skill",l:"Навык, который оно прокачивает",o:[["","Без навыка"]].concat(state.skills.map(s=>[s.id,s.i+" "+s.n])),v:t.skill},{k:"d",l:"Сложность",o:DIFF,v:t.d||2},{k:"t",l:"Как часто",o:TOPT,v:t.t}],
+    o=>{const r={name:o.name.trim(),skill:o.skill,d:+o.d,t:+o.t};if(id)Object.assign(t,r);else state.tasks.push(Object.assign({id:"t"+Date.now()},r))},
+    id&&(()=>{state.tasks=state.tasks.filter(x=>x.id!==id);for(const k in state.done)state.done[k]=state.done[k].filter(i=>i!==id)}));
+}
+function editSkill(id){
+  const s=id?state.skills.find(x=>x.id===id):{n:"",i:"⭐",c:PAL[3][0]};
+  form(id?"Изменить навык":"Новый навык",[{k:"n",l:"Название",v:s.n,m:30},{k:"i",l:"Значок (эмодзи)",v:s.i,m:4},{k:"c",l:"Цвет",o:PAL,v:s.c}],
+    o=>{const r={n:o.n.trim(),i:o.i.trim()||"⭐",c:o.c};if(id)Object.assign(s,r);else state.skills.push(Object.assign({id:"s"+Date.now()},r))},
+    id&&(()=>{state.skills=state.skills.filter(x=>x.id!==id);state.tasks.forEach(t=>{if(t.skill===id)t.skill=""})}));
+}
+function editReward(id){
+  const r=id?state.rewards.find(x=>x.id===id):{name:"",cost:100};
+  form(id?"Изменить награду":"Новая награда",[{k:"name",l:"Название",v:r.name,m:50},{k:"cost",l:"Цена в монетах",t:"number",v:r.cost}],
+    o=>{const v={name:o.name.trim(),cost:Math.max(1,+o.cost||1)};if(id)Object.assign(r,v);else state.rewards.push(Object.assign({id:"r"+Date.now()},v))},
+    id&&(()=>{state.rewards=state.rewards.filter(x=>x.id!==id)}));
+}
+function buy(id,btn){
+  const r=state.rewards.find(x=>x.id===id);if(!r||last.coins<r.cost)return;
+  const [x,y]=ctr(btn);state.spent.push({n:r.name,cost:r.cost,d:T});persist();render();boom(x,y,30);toast("Куплено: "+r.name+". Наслаждайтесь!","🎁");
+}
+// render
+function render(){
+  const C=last=calc(),ti=Math.min(C.lv-1,6);
+  $("today").textContent=now.toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
+  $("av").textContent=ICONS[ti];$("lvl").innerHTML="Уровень <b>"+C.lv+"</b> · "+TITLES[ti];
+  $("xpb").style.width=Math.round((C.xp-C.lo)/(C.hi-C.lo)*100)+"%";
+  $("xpt").textContent=(C.xp-C.lo)+" из "+(C.hi-C.lo)+" XP до следующего уровня · всего "+C.xp+" XP";
+  cnt($("coinTop"),C.coins);
+  // quests
+  const sd=parse(sel);
+  $("qTitle").textContent=sel===T?"Квесты на сегодня":"Квесты: "+sd.toLocaleDateString("ru-RU",{day:"numeric",month:"long"});
+  $("quests").innerHTML=state.tasks.map(t=>{
+    const on=isDone(sel,t.id),s=skillOf(t),wc=weekCount(t.id,sd),st=t.t===7?streak(t.id):0;
+    return `<button class="q${on?" on":""}" data-q="${t.id}" aria-pressed="${on}"${sel>T?" disabled":""}><span class="box">✓</span><span><b>${esc(t.name)}</b><small>${s?s.i+" "+esc(s.n)+" · ":""}${st?"🔥 "+st+" · ":""}неделя ${wc} из ${t.t}</small><div class="wk"><i style="width:${Math.min(100,wc/t.t*100)}%"></i></div></span><span class="r">+${xpOf(t)} XP</span></button>`}).join("")||'<div class="empty">Заданий нет. Добавьте первое во вкладке «Задания».</div>';
+  $("restB").textContent=state.rest[sel]?"🛌 Выходной · отменить":"🛌 Выходной";
+  $("mood").innerHTML=MOODS.map((e,i)=>`<button data-mood="${i+1}" class="${state.mood[sel]===i+1?"on":""}" aria-label="Настроение ${i+1} из 5">${e}</button>`).join("");
+  // calendar
+  const y=view.getFullYear(),m=view.getMonth(),days=new Date(y,m+1,0).getDate(),off=(new Date(y,m,1).getDay()+6)%7;
+  $("mName").textContent=view.toLocaleDateString("ru-RU",{month:"long",year:"numeric"});
+  let c=["пн","вт","ср","чт","пт","сб","вс"].map(x=>`<div class="dw">${x}</div>`).join("");
+  for(let i=0;i<42;i++){const d=new Date(y,m,i-off+1),k=kd(d),h=Math.min(1,(C.dayXp[k]||0)/150);c+=`<button class="day${d.getMonth()!==m?" o":""}${k===T?" t":""}${k===sel?" s":""}" style="--h:${h}" data-date="${k}">${d.getDate()}${state.rest[k]?'<span class="rs">🛌</span>':""}</button>`}
+  $("cal").innerHTML=c;
+  // chart
+  const W=620,H=170,L=28,B=22,Tp=8,bw=(W-L)/days,mx=Math.max(60,...Array.from({length:days},(_,i)=>C.dayXp[y+"-"+pad(m+1)+"-"+pad(i+1)]||0));let s="";
+  [0,.5,1].forEach(v=>{const yy=Tp+(H-B-Tp)*(1-v);s+=`<line x1="${L}" x2="${W}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="0" y="${yy+3}">${Math.round(mx*v)}</text>`});
+  for(let d=1;d<=days;d++){const k=y+"-"+pad(m+1)+"-"+pad(d),v=C.dayXp[k]||0,bh=(H-B-Tp)*v/mx,x=L+(d-1)*bw+bw*.15;
+    s+=`<rect x="${x}" y="${H-B-bh}" width="${bw*.7}" height="${Math.max(bh,v?2:0)}" rx="2" fill="${k===T?"var(--gold)":"var(--acc)"}" style="animation-delay:${d*12}ms"><title>${d}: ${v} XP</title></rect>`;
+    if(d===1||d%5===0)s+=`<text x="${x+bw*.35}" y="${H-6}" text-anchor="middle">${d}</text>`}
+  $("chart").innerHTML=s;
+  // tasks page
+  $("tlist").innerHTML=state.tasks.map(t=>{const s=skillOf(t);return `<div class="item"><div class="ic" style="background:${s?s.c+"33":"var(--bg)"}">${s?s.i:"•"}</div><div class="m"><b>${esc(t.name)}</b><span class="sm">${s?esc(s.n):"Без навыка"} · ${TOPT.find(o=>o[0]===t.t)[1].toLowerCase()} · +${xpOf(t)} XP</span></div><button class="ed" data-et="${t.id}" aria-label="Изменить" title="Изменить">✎</button></div>`}).join("")||'<div class="empty">Пока пусто.</div>';
+  $("gTitle").textContent="Чек-лист: "+view.toLocaleDateString("ru-RU",{month:"long",year:"numeric"});
+  let g='<thead><tr><th class="nm"></th>';for(let d=1;d<=days;d++)g+=`<th class="d${y+"-"+pad(m+1)+"-"+pad(d)===T?" t":""}">${d}</th>`;g+="</tr></thead><tbody>";
+  state.tasks.forEach(t=>{g+=`<tr><td class="nm">${esc(t.name)}</td>`;for(let d=1;d<=days;d++){const k=y+"-"+pad(m+1)+"-"+pad(d),on=isDone(k,t.id);g+=`<td><button class="cell${on?" on":""}${k===T?" t":""}" data-k="${k}" data-id="${t.id}" aria-pressed="${on}" aria-label="${esc(t.name)}, ${d}"${k>T?" disabled":""}></button></td>`}g+="</tr>"});
+  $("grid").innerHTML=g+"</tbody>";
+  // skills
+  $("slist").innerHTML=state.skills.map(s=>{const k=C.sk[s.id],n=state.tasks.filter(t=>t.skill===s.id).length;return `<div class="skc" style="--c:${s.c}"><div class="row"><b>${s.i} ${esc(s.n)}</b><button class="ed" data-es="${s.id}" aria-label="Изменить навык" title="Изменить">✎</button></div><div class="sm">Уровень ${k.lv} · ${k.n} отметок · заданий: ${n}</div><div class="bar"><i style="width:${Math.round((k.xp-k.lo)/(k.hi-k.lo)*100)}%"></i></div><div class="sm">${k.xp-k.lo} из ${k.hi-k.lo} XP</div></div>`}).join("")||'<div class="empty">Добавьте первый навык.</div>';
+  if(page==="skills")radar(false);
+  // achievements
+  const got=[];
+  $("alist").innerHTML=A.map(a=>{const [cur,max]=a[3](C),ok=cur>=max;if(ok)got.push(a[1]);return `<div class="a ${ok?"on":"off"}"><span>${a[0]}</span><b>${a[1]}</b><div class="sm">${a[2]}</div><div class="bar"><i style="width:${Math.min(100,cur/max*100)}%"></i></div><div class="sm">${Math.min(cur,max)} / ${max}</div></div>`}).join("");
+  const fresh=got.filter(n=>!state.ach.includes(n));
+  if(fresh.length){state.ach=state.ach.concat(fresh);persist();toast("Достижение: "+fresh.join(", "),A.filter(a=>fresh.includes(a[1])).map(a=>a[0]).join(" "));if(state.ach.length>fresh.length||C.tot>0){const [x,y2]=ctr($("av"));boom(x,y2,24)}}
+  if(state.lv===undefined)state.lv=C.lv;if(C.lv!==state.lv){state.lv=C.lv;persist()}
+  // shop
+  $("rlist").innerHTML=state.rewards.map(r=>`<div class="item"><div class="ic" style="background:var(--acc2)">🎁</div><div class="m"><b>${esc(r.name)}</b><div class="bar"><i style="width:${Math.min(100,C.coins/r.cost*100)}%"></i></div><span class="sm">${Math.min(C.coins,r.cost)} из ${r.cost} 🪙</span></div><button class="btn go" data-buy="${r.id}"${C.coins<r.cost?" disabled":""}>Купить</button><button class="ed" data-er="${r.id}" aria-label="Изменить награду" title="Изменить">✎</button></div>`).join("")||'<div class="empty">Добавьте первую награду.</div>';
+  $("hist").innerHTML=state.spent.slice().reverse().map(p=>`<div class="item"><div class="m"><b>${esc(p.n)}</b><span class="sm">${parse(p.d).toLocaleDateString("ru-RU",{day:"numeric",month:"long"})}</span></div><span class="r">−${p.cost} 🪙</span></div>`).join("")||'<div class="empty">Покупок пока не было.</div>';
+}
+function radar(anim){
+  const S=state.skills,n=S.length,el=$("radar");if(!n){el.innerHTML='<div class="empty">Добавьте навыки, чтобы увидеть карту.</div>';return}
+  const vals=S.map(s=>{const k=last.sk[s.id];return k.lv-1+(k.xp-k.lo)/(k.hi-k.lo)}),M=Math.max(3,Math.ceil(Math.max(...vals))+1),cx=160,cy=150,R=98;
+  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;return [cx+Math.cos(a)*r,cy+Math.sin(a)*r]};
+  let g="";[1/3,2/3,1].forEach(f=>{g+=`<polygon points="${S.map((_,i)=>pt(i,R*f).join(",")).join(" ")}" fill="none" stroke="var(--line)"/>`});
+  S.forEach((s,i)=>{const [x,y]=pt(i,R),[lx,ly]=pt(i,R+22);g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--line)"/><text x="${lx}" y="${ly+5}" text-anchor="middle" font-size="16">${esc(s.i)}</text>`});
+  el.innerHTML=`<svg viewBox="0 0 320 300" class="radar" role="img" aria-label="Карта навыков">${g}<polygon id="rp" fill="var(--acc)" fill-opacity=".28" stroke="var(--acc)" stroke-width="2.5" stroke-linejoin="round"/><g id="rd"></g></svg>`;
+  const draw=p=>{const P=vals.map((v,i)=>pt(i,R*Math.max(.05,v/M)*p));$("rp").setAttribute("points",P.map(a=>a.join(",")).join(" "));$("rd").innerHTML=P.map((a,i)=>`<circle cx="${a[0]}" cy="${a[1]}" r="6" fill="${S[i].c}" stroke="var(--card)" stroke-width="2"><title>${esc(S[i].n)}: уровень ${last.sk[S[i].id].lv}</title></circle>`).join("")};
+  if(RM||!anim)draw(1);else{const t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/800);draw(1-Math.pow(1-p,3));if(p<1)requestAnimationFrame(f)})(t0)}
+}
+function show(p){
+  page=p;document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.p===p));
+  document.querySelectorAll(".page").forEach(e=>e.classList.toggle("show",e.id==="p-"+p));
+  if(p==="skills")radar(true);
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(d.p)show(d.p);
+  else if(d.q)toggle(sel,d.q,b);
+  else if(d.k)toggle(d.k,d.id,b);
+  else if(d.date){sel=d.date;render()}
+  else if(d.m){view=new Date(view.getFullYear(),view.getMonth()+ +d.m,1);render()}
+  else if(d.mood){const v=+d.mood;if(state.mood[sel]===v)delete state.mood[sel];else state.mood[sel]=v;save()}
+  else if(d.et)editTask(d.et);else if(d.es)editSkill(d.es);else if(d.er)editReward(d.er);
+  else if(d.buy)buy(d.buy,b);
+});
+$("restB").onclick=()=>{if(state.rest[sel])delete state.rest[sel];else state.rest[sel]=1;save()};
+$("addT").onclick=()=>editTask();$("addS").onclick=()=>editSkill();$("addR").onclick=()=>editReward();
+$("goal").value=state.goal||"";$("goal").oninput=function(){state.goal=this.value;persist()};
+render();
+})();
 </script>
-</body></html>
+<script>
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script>
+</body>
+</html>
