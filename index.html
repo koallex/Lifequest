@@ -116,11 +116,28 @@ dialog label{display:block;font-size:14px;color:var(--mute);margin-bottom:12px}
 .empty{color:var(--mute);padding:8px 0}
 @media (max-width:760px){.s7,.s5,.s6{grid-column:span 12}.hero{grid-template-columns:1fr;justify-items:center;text-align:center}.hero>div{width:100%}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.quote-card{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--card),var(--acc2));border:1px solid var(--line);padding:18px 20px;margin-bottom:14px}
+.quote-card:before{content:"“";position:absolute;right:16px;top:-28px;font:900 130px/1 Georgia,serif;color:var(--acc);opacity:.10;pointer-events:none}
+.quote-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.quote-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+.quote-text{font-size:clamp(17px,2.5vw,21px);line-height:1.4;font-weight:800;max-width:850px;position:relative}
+.quote-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap}
+.quote-note{font-size:12px;color:var(--mute)}
+.quote-actions{display:flex;gap:7px}
+.quote-actions .btn{font-size:12px;padding:6px 12px}
+@media(max-width:600px){.quote-card{padding:16px}.quote-top{align-items:flex-start}.quote-text{font-size:17px}}
+
 </style>
 </head>
 <body>
 <div class="app">
   <header class="top"><div><div class="brand">LIFE QUEST</div><div class="sub" id="today"></div></div><div class="coin">🪙 <b id="coinTop">0</b></div></header>
+  <section class="card quote-card" aria-label="Мотивирующая мысль дня">
+    <div class="quote-top"><span class="quote-kicker" id="quoteKicker">Мысль дня</span><span class="quote-note" id="quoteCount"></span></div>
+    <div class="quote-text" id="quoteText" aria-live="polite"></div>
+    <div class="quote-bottom"><span class="quote-note" id="quoteTheme">Маленький шаг тоже имеет значение</span><div class="quote-actions"><button class="btn" id="quoteNext" type="button">↻ Другая мысль</button></div></div>
+  </section>
   <section class="card hero" id="hero">
     <div class="avatar" id="av"></div>
     <div><div class="lvl" id="lvl"></div><div class="xpbar"><i id="xpb"></i></div><div class="xpt" id="xpt"></div></div>
@@ -171,6 +188,45 @@ function seed(){
   done:{},rest:{},mood:{},ach:[],spent:[],goal:"",rewards:[{id:"r1",name:"Вечер любимого сериала",cost:50},{id:"r2",name:"Покупка для себя",cost:150},{id:"r3",name:"Выходной без обязательств",cost:300}]};
   try{const o=JSON.parse(localStorage.getItem("habit-tracker-v1"));if(o&&o.habits&&o.habits.length){s.tasks=o.habits.map(h=>({id:h.id,name:h.name,skill:"s4",t:h.t||7,d:2}));s.done=o.done||{};s.rest=o.rest||{};s.mood=o.mood||{};s.goal=o.goal||""}}catch(e){}
   return s;
+}
+const QUOTES=["Большие перемены начинаются с маленького действия, которое ты выбираешь сегодня.","Не жди идеального момента. Сделай этот момент началом.","Последовательность сильнее редких всплесков вдохновения.","Твой темп не обязан совпадать с чужим. Важно продолжать свой путь.","Каждый выполненный шаг — доказательство того, что ты можешь себе доверять.","Не нужно изменить всю жизнь за день. Достаточно изменить сегодняшний день.","Дисциплина — это забота о будущем себе.","Начать заново — не поражение. Это ещё одна возможность выбрать направление.","Сравнивай себя не с другими, а с собой вчерашним.","Даже медленное движение приближает к цели, если ты не остановился.","Сначала действие, потом мотивация. Часто именно так и работает прогресс.","Не обесценивай маленькие победы: из них складывается большая история.","Трудный день не отменяет путь, который ты уже прошёл.","Сделай сегодня то, за что завтра поблагодаришь себя.","Уверенность растёт каждый раз, когда ты выполняешь обещание самому себе.","Не всё должно получиться сразу. Но чему-то можно научиться прямо сейчас.","План может быть гибким, а намерение двигаться вперёд — твёрдым.","Лучший способ приблизить цель — превратить её в следующий конкретный шаг.","Не ищи лёгкий путь. Ищи путь, который сможешь проходить регулярно.","Твоя будущая версия строится из решений, которые ты принимаешь сегодня.","Понедельник — не магия. Новый старт доступен в любой день.","Начни неделю с одного ясного приоритета, а не с десятка обещаний.","Пусть эта неделя будет не идеальной, а осмысленной.","Семь спокойных последовательных дней могут изменить больше, чем один рывок.","Выбери главное на сегодня — и дай ему своё внимание.","Вторник напоминает: настоящий прогресс начинается после первого импульса.","Не обязательно успеть всё. Важно не потерять то, что действительно важно.","Сосредоточься на следующем шаге, а не на всей лестнице.","Среда — хорошее время проверить курс и продолжить без лишней суеты.","Половина пути — не повод сбавлять ценность своих усилий.","Если план не работает, измени план, а не отказывайся от цели.","Четверг — шанс довести начатое до заметного результата.","Сделай немного больше заботы о себе и немного меньше самокритики.","Пятница — повод увидеть, сколько всего ты уже сделал.","Заверши неделю не только делами, но и благодарностью себе.","Отдых — часть долгой дистанции, а не награда за истощение.","Суббота создана не только для списка дел, но и для жизни.","Позволь себе восстановиться. Сильный путь требует пауз.","Воскресенье — время заметить хорошее и мягко наметить следующий шаг.","Не превращай отдых в чувство вины. Восстановление тоже продвигает вперёд.","Весна напоминает: рост часто начинается незаметно.","Дай новым привычкам время укорениться, как семенам в земле.","Не торопи свой расцвет. Продолжай создавать для него условия.","Пробуждение начинается с решения попробовать ещё раз.","Лето — время быть в движении и не забывать наслаждаться дорогой.","Собирай не только достижения, но и впечатления.","Пусть энергия длинного дня поможет сделать шаг к важному.","Не откладывай жизнь до момента, когда всё будет готово.","Осень учит отпускать лишнее и оставлять главное.","Порядок в целях начинается с честного взгляда на свои приоритеты.","Собери урожай маленьких усилий, которые делал всё это время.","Перемены не всегда заметны сразу. Иногда они похожи на тихую работу корней.","Зима — не остановка, а время укрепить фундамент.","Сохраняй тепло к себе, особенно когда путь кажется медленным.","Тишина и пауза тоже могут быть продуктивными.","Даже в короткий день можно сделать один светлый шаг.","Здоровье — не проект на потом, а ежедневное внимание к себе.","Двигайся ради самочувствия, а не ради наказания за вчерашний день.","Сон, движение и восстановление — тоже достижения.","Забота о теле — способ сказать себе: моя жизнь важна.","Не требуй от себя максимума каждый день. Ищи устойчивый ритм.","Знание становится силой, когда превращается в действие.","Двадцать минут внимания сегодня могут стать большим навыком завтра.","Любопытство — хорошее топливо для роста.","Не бойся быть новичком. Каждый мастер когда-то начинал с простого.","Развивайся не ради идеального образа, а ради большей свободы выбора.","Финансовая устойчивость строится не одним решением, а привычками.","Маленькая осознанная экономия — это голос в пользу будущих возможностей.","Деньги любят ясность: замечай, куда уходят твои ресурсы.","Сначала определи, что для тебя ценно, а потом распределяй силы и средства.","Умение сказать «не сейчас» иногда приближает к большому «да».","Близость растёт из внимания, присутствия и простых добрых поступков.","Выдели время тем, кто делает твою жизнь теплее.","Слушать внимательно — тоже действие, которое укрепляет отношения.","Не откладывай важные слова и маленькие проявления заботы.","Успех теряет смысл, если рядом не остаётся места для жизни.","Смелость — не отсутствие сомнений, а готовность действовать вместе с ними.","Ты можешь волноваться и всё равно сделать важный шаг.","Неудача — событие, а не определение тебя.","Просить о помощи — признак зрелости, а не слабости.","Ошибки дают информацию. Используй её, чтобы выбрать следующий ход.","Пусть страх будет сигналом подготовиться, а не приказом остановиться.","Фокус — это умение беречь внимание для действительно важного.","Убери одно лишнее отвлечение и верни себе немного времени.","Одна завершённая задача часто ценнее десяти начатых.","Не заполняй каждую минуту. Оставляй место для мысли.","Твоя энергия ограничена. Расходуй её осознанно.","Порядок не обязан быть идеальным. Пусть он помогает тебе жить.","Если сегодня тяжело, уменьши шаг, но не отказывайся от себя.","Плохой день — не плохая жизнь.","Ты имеешь право на паузу и право попробовать снова.","Не ругай себя за медленный прогресс. Поддержи себя следующим действием.","Иногда победа дня — просто не сдаться и позаботиться о себе.","Терпение — это продолжение усилий без требования мгновенного результата.","Не всё важное измеряется цифрами и галочками.","Замечай путь, а не только финиш.","Будь требовательным к своим решениям и добрым к себе.","Сегодняшний выбор не обязан быть грандиозным, чтобы иметь значение.","Сделай пространство вокруг себя чуть лучше — начни с малого.","Вдохновение приходит и уходит. Система помогает продолжать.","Хорошая привычка — это облегчённое решение, принятое заранее.","Пусть твои цели поддерживают жизнь, а не вытесняют её.","Достаточно одного честного шага, чтобы снова почувствовать направление.","Не жди признания за каждый шаг. Твой прогресс всё равно реален.","Стабильность рождается из повторения простых полезных действий.","Каждый день даёт шанс выбрать, каким человеком становиться.","Сосредоточься на том, что зависит от тебя, и отпусти остальное.","Не обязательно быть готовым на сто процентов. Начни с того, что есть.","Твоя история ещё пишется. Сегодня — одна из её страниц.","Пусть сегодняшний день будет немного ближе к жизни, которую ты хочешь."];
+
+const quoteSeason=d=>{const m=d.getMonth();return m>=2&&m<=4?"Весенняя мысль":m>=5&&m<=7?"Летний настрой":m>=8&&m<=10?"Осенний настрой":"Зимняя мысль"};
+const quoteContext=d=>{
+  const day=(d.getDay()+6)%7;
+  const days=["Понедельничный настрой","Мысль вторника","Середина недели","Мысль четверга","Пятничный настрой","Мысль выходного дня","Воскресный настрой"];
+  return {day,season:d.getMonth()>=2&&d.getMonth()<=4?0:d.getMonth()>=5&&d.getMonth()<=7?1:d.getMonth()>=8&&d.getMonth()<=10?2:3,label:d.getDay()===0||d.getDay()===6?"Мысль выходного дня":days[day]};
+};
+const quoteGroup=i=>i>=20&&i<40?"weekday":i>=40&&i<56?"season":"general";
+const quoteSeen=()=>Array.isArray(state.quoteSeen)?state.quoteSeen:[];
+function chooseQuote(different){
+  const ctx=quoteContext(now),seen=quoteSeen();
+  let pool=QUOTES.map((_,i)=>i).filter(i=>!seen.includes(i));
+  if(!pool.length){state.quoteSeen=[];pool=QUOTES.map((_,i)=>i)}
+  // На каждый день недели и сезон есть тематическая подборка; общие мысли остаются в ротации.
+  const weekdayPool=pool.filter(i=>i>=20&&i<40&&Math.floor((i-20)/2)===ctx.day);
+  const seasonPool=pool.filter(i=>i>=40&&i<56&&Math.floor((i-40)/4)===ctx.season);
+  const contextual=ctx.day>=5?weekdayPool:weekdayPool;
+  let candidates=contextual.concat(seasonPool).filter((v,i,a)=>a.indexOf(v)===i);
+  const general=pool.filter(i=>quoteGroup(i)==="general");
+  candidates=candidates.concat(general).filter((v,i,a)=>a.indexOf(v)===i);
+  if(!candidates.length)candidates=pool;
+  if(different&&state.quoteIndex!=null&&candidates.length>1)candidates=candidates.filter(i=>i!==state.quoteIndex);
+  const pick=candidates[Math.floor(Math.random()*candidates.length)];
+  state.quoteIndex=pick;
+  state.quoteDay=kd(now);
+  state.quoteSeen=seen.concat(pick);
+  return pick;
+}
+function ensureQuote(force){
+  if(force||state.quoteDay!==T||!Number.isInteger(state.quoteIndex)||!QUOTES[state.quoteIndex])chooseQuote(!!force);
+}
+function renderQuote(){
+  ensureQuote(false);
+  const ctx=quoteContext(now),i=state.quoteIndex;
+  $("quoteText").textContent=QUOTES[i];
+  $("quoteKicker").textContent=(ctx.label+" · "+quoteSeason(now)).toLocaleUpperCase("ru-RU");
+  $("quoteCount").textContent="Мысль "+(Math.min(quoteSeen().length,QUOTES.length))+" из "+QUOTES.length;
 }
 let state=null;
 try{const r=localStorage.getItem(KEY);if(r)state=JSON.parse(r)}catch(e){}
@@ -277,6 +333,7 @@ function buy(id,btn){
 }
 // render
 function render(){
+  renderQuote();
   const C=last=calc(),ti=Math.min(C.lv-1,6);
   $("today").textContent=now.toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
   $("av").textContent=ICONS[ti];$("lvl").innerHTML="Уровень <b>"+C.lv+"</b> · "+TITLES[ti];
@@ -352,6 +409,7 @@ document.addEventListener("click",e=>{
 $("restB").onclick=()=>{if(state.rest[sel])delete state.rest[sel];else state.rest[sel]=1;save()};
 $("addT").onclick=()=>editTask();$("addS").onclick=()=>editSkill();$("addR").onclick=()=>editReward();
 $("goal").value=state.goal||"";$("goal").oninput=function(){state.goal=this.value;persist()};
+$("quoteNext").onclick=()=>{chooseQuote(true);persist();renderQuote();};
 render();
 })();
 </script>
