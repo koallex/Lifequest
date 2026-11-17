@@ -1,5 +1,5 @@
 // Life Quest — service worker. При обновлении приложения увеличьте номер версии.
-const VERSION = "life-quest-v4";
+const VERSION = "life-quest-v5";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./favicon.svg", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", e => {
